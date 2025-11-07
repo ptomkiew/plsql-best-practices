@@ -1,0 +1,1727 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>najlepsze_praktyki_formatowania_plsql</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="custom-style.css" />
+</head>
+<body>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#najlepsze-praktyki-formatowania-kodu-plsql"
+id="toc-najlepsze-praktyki-formatowania-kodu-plsql">Najlepsze Praktyki
+Formatowania Kodu PL/SQL</a>
+<ul>
+<li><a href="#spis-treści" id="toc-spis-treści">Spis treści</a></li>
+<li><a href="#wprowadzenie" id="toc-wprowadzenie">Wprowadzenie</a></li>
+<li><a href="#konwencje-nazewnictwa"
+id="toc-konwencje-nazewnictwa">Konwencje nazewnictwa</a>
+<ul>
+<li><a href="#nazwy-tabel-i-kolumn" id="toc-nazwy-tabel-i-kolumn">1.1
+Nazwy tabel i kolumn</a></li>
+<li><a href="#nazwy-obiektów-bazodanowych"
+id="toc-nazwy-obiektów-bazodanowych">1.2 Nazwy obiektów
+bazodanowych</a></li>
+<li><a href="#nazwy-zmiennych-plsql" id="toc-nazwy-zmiennych-plsql">1.3
+Nazwy zmiennych PL/SQL</a></li>
+</ul></li>
+<li><a href="#wcięcia-i-formatowanie"
+id="toc-wcięcia-i-formatowanie">Wcięcia i formatowanie</a>
+<ul>
+<li><a href="#wcięcia" id="toc-wcięcia">2.1 Wcięcia</a></li>
+<li><a href="#formatowanie-bloków-begin-end"
+id="toc-formatowanie-bloków-begin-end">2.2 Formatowanie bloków
+BEGIN-END</a></li>
+</ul></li>
+<li><a href="#instrukcje-sql" id="toc-instrukcje-sql">Instrukcje SQL</a>
+<ul>
+<li><a href="#formatowanie-select" id="toc-formatowanie-select">3.1
+Formatowanie SELECT</a></li>
+<li><a href="#formatowanie-insert" id="toc-formatowanie-insert">3.2
+Formatowanie INSERT</a></li>
+<li><a href="#formatowanie-update" id="toc-formatowanie-update">3.3
+Formatowanie UPDATE</a></li>
+</ul></li>
+<li><a href="#procedury-i-funkcje"
+id="toc-procedury-i-funkcje">Procedury i funkcje</a>
+<ul>
+<li><a href="#deklaracja-parametrów" id="toc-deklaracja-parametrów">4.1
+Deklaracja parametrów</a></li>
+</ul></li>
+<li><a href="#obsługa-wyjątków" id="toc-obsługa-wyjątków">Obsługa
+wyjątków</a>
+<ul>
+<li><a href="#struktura-exception" id="toc-struktura-exception">5.1
+Struktura EXCEPTION</a></li>
+</ul></li>
+<li><a href="#komentarze-i-dokumentacja"
+id="toc-komentarze-i-dokumentacja">Komentarze i dokumentacja</a>
+<ul>
+<li><a href="#komentarze-nagłówkowe" id="toc-komentarze-nagłówkowe">6.1
+Komentarze nagłówkowe</a></li>
+<li><a href="#komentarze-w-kodzie" id="toc-komentarze-w-kodzie">6.2
+Komentarze w kodzie</a></li>
+</ul></li>
+<li><a href="#najlepsze-praktyki" id="toc-najlepsze-praktyki">Najlepsze
+praktyki</a>
+<ul>
+<li><a href="#używanie-aliasów-tabel"
+id="toc-używanie-aliasów-tabel">7.1 Używanie aliasów tabel</a></li>
+<li><a href="#używanie-nazwanych-parametrów"
+id="toc-używanie-nazwanych-parametrów">7.3 Używanie nazwanych
+parametrów</a></li>
+<li><a href="#używanie-kursora-for-loop"
+id="toc-używanie-kursora-for-loop">7.5 Używanie kursora FOR
+LOOP</a></li>
+<li><a href="#bulk-operations-bulk-collect-i-forall"
+id="toc-bulk-operations-bulk-collect-i-forall">7.6 Bulk operations (BULK
+COLLECT i FORALL)</a></li>
+<li><a href="#transakcje-i-commit" id="toc-transakcje-i-commit">7.7
+Transakcje i COMMIT</a></li>
+<li><a href="#autonomous-transactions"
+id="toc-autonomous-transactions">7.8 Autonomous transactions</a></li>
+</ul></li>
+<li><a href="#podsumowanie" id="toc-podsumowanie">Podsumowanie</a>
+<ul>
+<li><a href="#zalecane-narzędzia" id="toc-zalecane-narzędzia">Zalecane
+narzędzia</a></li>
+<li><a href="#dodatkowe-zasoby" id="toc-dodatkowe-zasoby">Dodatkowe
+zasoby</a></li>
+<li><a href="#historia-zmian" id="toc-historia-zmian">Historia
+zmian:</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="najlepsze-praktyki-formatowania-kodu-plsql">Najlepsze Praktyki
+Formatowania Kodu PL/SQL</h1>
+<h2 id="spis-treści">Spis treści</h2>
+<ol type="1">
+<li><a href="#wprowadzenie">Wprowadzenie</a></li>
+<li><a href="#konwencje-nazewnictwa">Konwencje nazewnictwa</a></li>
+<li><a href="#wcięcia-i-formatowanie">Wcięcia i formatowanie</a></li>
+<li><a href="#instrukcje-sql">Instrukcje SQL</a></li>
+<li><a href="#procedury-i-funkcje">Procedury i funkcje</a></li>
+<li><a href="#obsługa-wyjątków">Obsługa wyjątków</a></li>
+<li><a href="#komentarze-i-dokumentacja">Komentarze i
+dokumentacja</a></li>
+<li><a href="#najlepsze-praktyki">Najlepsze praktyki</a></li>
+</ol>
+<hr />
+<h2 id="wprowadzenie">Wprowadzenie</h2>
+<p>Dokument ten przedstawia standardy i najlepsze praktyki formatowania
+kodu PL/SQL, których celem jest zwiększenie czytelności, utrzymywalności
+i spójności kodu w projektach bazodanowych Oracle.</p>
+<hr />
+<h2 id="konwencje-nazewnictwa">Konwencje nazewnictwa</h2>
+<h3 id="nazwy-tabel-i-kolumn">1.1 Nazwy tabel i kolumn</h3>
+<p><strong>Założenie:</strong> Używaj wielkich liter dla słów kluczowych
+SQL i małych liter dla nazw obiektów użytkownika.</p>
+<p><strong>Przykład:</strong></p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- ✓ POPRAWNIE</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> pracownicy (</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  id_pracownika  <span class="dt">NUMBER</span>(<span class="dv">10</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  imie       <span class="dt">VARCHAR2</span>(<span class="dv">50</span>),</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  nazwisko     <span class="dt">VARCHAR2</span>(<span class="dv">50</span>),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  data_zatrudnienia <span class="dt">DATE</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">CONSTRAINT</span> pk_pracownicy <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (id_pracownika)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
+<p><strong>Wyjaśnienie:</strong> Stosowanie spójnej konwencji wielkości
+liter pozwala szybko rozróżnić słowa kluczowe SQL od nazw obiektów
+utworzonych przez użytkownika. Ułatwia to czytanie i rozumienie
+kodu.</p>
+<h3 id="nazwy-obiektów-bazodanowych">1.2 Nazwy obiektów
+bazodanowych</h3>
+<p><strong>Założenie:</strong> Stosuj standardową konwencję nazewniczą
+dla wszystkich obiektów bazodanowych.</p>
+<h4 id="tabele-i-podstawowe-ograniczenia">1.2.1 Tabele i podstawowe
+ograniczenia</h4>
+<table>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 47%" />
+<col style="width: 22%" />
+</colgroup>
+<thead>
+<tr>
+<th>Typ obiektu</th>
+<th>Konwencja nazewnicza</th>
+<th>Przykład</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Tabela</strong></td>
+<td>Nazwa w liczbie mnogiej (ostatni człon)</td>
+<td><code>POLICIES</code></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><code>POLICY_ROLES</code></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><code>POLICY_ROLE_TYPES</code></td>
+</tr>
+<tr>
+<td><strong>Primary Key</strong></td>
+<td><code>&lt;table&gt;_PK</code></td>
+<td><code>POLICIES_PK</code></td>
+</tr>
+<tr>
+<td><strong>Foreign Key</strong></td>
+<td><code>&lt;table&gt;_&lt;ref_table&gt;_&lt;optional_name&gt;_FK</code></td>
+<td><code>POLICIES_CUSTOMERS_FK</code></td>
+</tr>
+<tr>
+<td></td>
+<td>⚠️ <strong>Zawsze tworzyć indeks na kolumnie FK!</strong></td>
+<td><code>CUSTOMERS_CUSTOMERS_FK</code></td>
+</tr>
+<tr>
+<td><strong>Unique Key</strong></td>
+<td><code>&lt;table&gt;_&lt;optional_name&gt;_UK</code></td>
+<td><code>POLICIES_UK</code></td>
+</tr>
+<tr>
+<td><strong>Check Constraint</strong></td>
+<td><code>&lt;table&gt;_&lt;optional_name&gt;_CHK</code></td>
+<td><code>POLICIES_STATUS_CHK</code></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><code>POLICIES_FLAG_CHK</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="indeksy">1.2.2 Indeksy</h4>
+<table>
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 48%" />
+<col style="width: 23%" />
+</colgroup>
+<thead>
+<tr>
+<th>Typ indeksu</th>
+<th>Konwencja nazewnicza</th>
+<th>Przykład</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Indeks dla PK</strong></td>
+<td><code>&lt;PK_name&gt;_IDX</code></td>
+<td><code>POLICIES_PK_IDX</code></td>
+</tr>
+<tr>
+<td><strong>Indeks dla UK</strong></td>
+<td><code>&lt;UK_name&gt;_IDX</code></td>
+<td><code>POLICIES_UK_IDX</code></td>
+</tr>
+<tr>
+<td><strong>Indeks dla FK</strong></td>
+<td><code>&lt;FK_name&gt;_IDX</code></td>
+<td><code>POLICIES_CUSTOMERS_FK_IDX</code></td>
+</tr>
+<tr>
+<td><strong>Indeks pozostałe</strong></td>
+<td><code>&lt;table&gt;_&lt;optional_name&gt;_IDX</code></td>
+<td><code>POLICIES_CUSTOMER_NAME_IDX</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="triggery">1.2.3 Triggery</h4>
+<table>
+<colgroup>
+<col style="width: 36%" />
+<col style="width: 24%" />
+<col style="width: 40%" />
+</colgroup>
+<thead>
+<tr>
+<th>Element</th>
+<th>Opis</th>
+<th>Przykład</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Konwencja</strong></td>
+<td><code>&lt;table&gt;_&lt;BA_flag&gt;&lt;IUD&gt;&lt;RS_flag&gt;_&lt;HIST&gt;_TRG</code></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>BA_flag</strong></td>
+<td>B (before) lub A (after)</td>
+<td><code>POLICIES_BIUR_TRG</code></td>
+</tr>
+<tr>
+<td><strong>IUD</strong></td>
+<td>I (insert), U (update), D (delete)</td>
+<td><code>POLICIES_AIUDR_HIST_TRG</code></td>
+</tr>
+<tr>
+<td><strong>RS_flag</strong></td>
+<td>R (row) lub S (statement)</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>HIST</strong></td>
+<td>Opcjonalny element dla triggerów historycznych</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Przykłady triggerów:</strong> -
+<code>POLICIES_BIUR_TRG</code> - before insert/update row -
+<code>POLICIES_AIUDR_HIST_TRG</code> - after insert/update/delete row
+(historyzujący)</p>
+<h4 id="sekwencje">1.2.4 Sekwencje</h4>
+<table>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 47%" />
+<col style="width: 22%" />
+</colgroup>
+<thead>
+<tr>
+<th>Typ obiektu</th>
+<th>Konwencja nazewnicza</th>
+<th>Przykład</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sequence</strong></td>
+<td><code>&lt;optional_table&gt;_&lt;optional_column&gt;_&lt;optional_name&gt;_SEQ</code></td>
+<td><code>POLICIES_ID_SEQ</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="widoki-i-tabele-specjalne">1.2.5 Widoki i tabele specjalne</h4>
+<table>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 47%" />
+<col style="width: 22%" />
+</colgroup>
+<thead>
+<tr>
+<th>Typ obiektu</th>
+<th>Konwencja nazewnicza</th>
+<th>Przykład</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Widoki</strong></td>
+<td><code>&lt;name&gt;_V</code></td>
+<td><code>ACTIVE_POLICIES_V</code></td>
+</tr>
+<tr>
+<td><strong>Widoki zmaterializowane</strong></td>
+<td><code>&lt;name&gt;_MV</code></td>
+<td><code>POLICY_SUMMARY_MV</code></td>
+</tr>
+<tr>
+<td><strong>External Table</strong></td>
+<td><code>&lt;name&gt;_EXT</code></td>
+<td><code>CUSTOMER_DATA_EXT</code></td>
+</tr>
+<tr>
+<td><strong>Global Temporary Table</strong></td>
+<td><code>&lt;name&gt;_TMP</code></td>
+<td><code>CALCULATION_RESULTS_TMP</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="typy-danych">1.2.6 Typy danych</h4>
+<table>
+<thead>
+<tr>
+<th>Typ obiektu</th>
+<th>Konwencja nazewnicza</th>
+<th>Przykład</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Typy</strong></td>
+<td><code>&lt;name&gt;_T</code></td>
+<td><code>EMPLOYEE_RECORD_T</code></td>
+</tr>
+<tr>
+<td><strong>Typy - table of</strong></td>
+<td><code>&lt;name&gt;_TT</code></td>
+<td><code>EMPLOYEE_LIST_TT</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="obiekty-systemowe">1.2.7 Obiekty systemowe</h4>
+<table>
+<thead>
+<tr>
+<th>Typ obiektu</th>
+<th>Konwencja nazewnicza</th>
+<th>Przykład</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Directory</strong></td>
+<td><code>&lt;name&gt;_DIR</code></td>
+<td><code>DATA_EXPORT_DIR</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="obiekty-plsql">1.2.8 Obiekty PL/SQL</h4>
+<table>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 47%" />
+<col style="width: 22%" />
+</colgroup>
+<thead>
+<tr>
+<th>Typ obiektu</th>
+<th>Konwencja nazewnicza</th>
+<th>Przykład</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Pakiet PL/SQL (INSIS events)</strong></td>
+<td><code>&lt;name&gt;_SRV</code></td>
+<td><code>POLICY_HANDLER_SRV</code></td>
+</tr>
+<tr>
+<td><strong>Procedura PL/SQL</strong></td>
+<td><code>&lt;name&gt;_PRC</code></td>
+<td><code>CALCULATE_PREMIUM_PRC</code></td>
+</tr>
+<tr>
+<td><strong>Funkcja PL/SQL</strong></td>
+<td><code>&lt;name&gt;_FUN</code></td>
+<td><code>GET_CUSTOMER_RATING_FUN</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Przykład zastosowania:</strong></p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- ✓ POPRAWNIE</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> policies (</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  policy_id          <span class="dt">NUMBER</span>(<span class="dv">10</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  customer_id        <span class="dt">NUMBER</span>(<span class="dv">10</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  policy_number      <span class="dt">VARCHAR2</span>(<span class="dv">50</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  status             <span class="dt">VARCHAR2</span>(<span class="dv">20</span>) <span class="kw">DEFAULT</span> <span class="st">&#39;ACTIVE&#39;</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  created_date       <span class="dt">DATE</span> <span class="kw">DEFAULT</span> <span class="fu">SYSDATE</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">CONSTRAINT</span> policies_pk <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (policy_id),</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">CONSTRAINT</span> policies_customers_fk <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (customer_id) </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">REFERENCES</span> customers (customer_id),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">CONSTRAINT</span> policies_status_chk <span class="kw">CHECK</span> (status <span class="kw">IN</span> (<span class="st">&#39;ACTIVE&#39;</span>, <span class="st">&#39;INACTIVE&#39;</span>, <span class="st">&#39;SUSPENDED&#39;</span>))</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>);</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">-- Indeksy (OBOWIĄZKOWE dla FK!)</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> policies_pk_idx <span class="kw">ON</span> policies (policy_id);</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> policies_customers_fk_idx <span class="kw">ON</span> policies (customer_id);</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> policies_policy_number_idx <span class="kw">ON</span> policies (policy_number);</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">-- Sequence</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">SEQUENCE</span> policies_id_seq</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">START</span> <span class="kw">WITH</span> <span class="dv">1</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">INCREMENT</span> <span class="kw">BY</span> <span class="dv">1</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">NOCACHE</span>;</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co">-- Trigger historyzujący</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">TRIGGER</span> policies_aiudr_hist_trg</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AFTER</span> <span class="kw">INSERT</span> <span class="kw">OR</span> <span class="kw">UPDATE</span> <span class="kw">OR</span> <span class="kw">DELETE</span> <span class="kw">ON</span> policies</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  <span class="cf">FOR</span> <span class="kw">EACH</span> <span class="kw">ROW</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Logika historyzacji</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="kw">NULL</span>;</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="cf">END</span>;</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="op">/</span></span></code></pre></div>
+<h3 id="nazwy-zmiennych-plsql">1.3 Nazwy zmiennych PL/SQL</h3>
+<p><strong>Założenie:</strong> Używaj standardowych prefiksów dla
+wszystkich zmiennych, parametrów i obiektów PL/SQL.</p>
+<h4 id="prefiksy-zmiennych-plsql">Prefiksy zmiennych PL/SQL</h4>
+<p><strong>Zmienne podstawowe:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Typ zmiennej</th>
+<th>Prefiks</th>
+<th>Przykład</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Zmienna globalna</strong></td>
+<td><code>g_</code></td>
+<td><code>g_session_user</code></td>
+</tr>
+<tr>
+<td><strong>Zmienna lokalna</strong></td>
+<td><code>l_</code></td>
+<td><code>l_counter</code></td>
+</tr>
+<tr>
+<td><strong>Stała</strong></td>
+<td><code>c_</code></td>
+<td><code>c_max_attempts</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Struktury danych:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Typ struktury</th>
+<th>Prefiks</th>
+<th>Przykład</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Typ danych</strong></td>
+<td><code>t_</code></td>
+<td><code>t_employee_rec</code></td>
+</tr>
+<tr>
+<td><strong>Kursor</strong></td>
+<td><code>cur_</code></td>
+<td><code>cur_employees</code></td>
+</tr>
+<tr>
+<td><strong>Zmienna lokalna rekordowa</strong></td>
+<td><code>lr_</code></td>
+<td><code>lr_employee_data</code></td>
+</tr>
+<tr>
+<td><strong>Zmienna globalna rekordowa</strong></td>
+<td><code>gr_</code></td>
+<td><code>gr_session_info</code></td>
+</tr>
+<tr>
+<td><strong>Zmienna lokalna typu kolekcja</strong></td>
+<td><code>lt_</code></td>
+<td><code>lt_employee_list</code></td>
+</tr>
+<tr>
+<td><strong>Zmienna globalna typu kolekcja</strong></td>
+<td><code>gt_</code></td>
+<td><code>gt_lookup_cache</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Wyjątki i parametry:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Typ elementu</th>
+<th>Prefiks</th>
+<th>Przykład</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Wyjątek</strong></td>
+<td><code>e_</code></td>
+<td><code>e_invalid_data</code></td>
+</tr>
+<tr>
+<td><strong>Parametr IN</strong></td>
+<td><code>i_</code></td>
+<td><code>i_employee_id</code></td>
+</tr>
+<tr>
+<td><strong>Parametr OUT</strong></td>
+<td><code>o_</code></td>
+<td><code>o_result_count</code></td>
+</tr>
+<tr>
+<td><strong>Parametr IN OUT</strong></td>
+<td><code>io_</code></td>
+<td><code>io_error_message</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Przykład:</strong></p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- ✓ POPRAWNIE</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">PROCEDURE</span> oblicz_wynagrodzenie (</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  i_id_pracownika    <span class="kw">IN</span>     <span class="dt">NUMBER</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  i_uwzglednij_bonus <span class="kw">IN</span>     <span class="dt">BOOLEAN</span> <span class="kw">DEFAULT</span> <span class="kw">TRUE</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  o_wynagrodzenie    <span class="kw">OUT</span>    <span class="dt">NUMBER</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  io_komunikat       <span class="kw">IN</span> <span class="kw">OUT</span> <span class="dt">VARCHAR2</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>) <span class="kw">IS</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Stałe</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  c_bonus_multiplier  <span class="kw">CONSTANT</span> <span class="dt">NUMBER</span> <span class="op">:=</span> <span class="fl">1.2</span>;</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  c_max_salary       <span class="kw">CONSTANT</span> <span class="dt">NUMBER</span> <span class="op">:=</span> <span class="dv">50000</span>;</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Zmienne lokalne</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  l_podstawa         <span class="dt">NUMBER</span>;</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  l_bonus           <span class="dt">NUMBER</span> <span class="op">:=</span> <span class="dv">0</span>;</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Kursor</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  cur_dane_pracownika <span class="kw">CURSOR</span> <span class="kw">IS</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span> p.wynagrodzenie_podstawowe, </span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>           p.premia_roczna</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>      <span class="kw">FROM</span> pracownicy p</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>     <span class="kw">WHERE</span> p.id_pracownika <span class="op">=</span> i_id_pracownika;</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Zmienna rekordowa</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  lr_pracownik       cur_dane_pracownika<span class="dt">%ROWTYPE</span>;</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Wyjątek własny</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  e_nieprawidlowy_id <span class="kw">EXCEPTION</span>;</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  <span class="kw">OPEN</span> cur_dane_pracownika;</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  FETCH cur_dane_pracownika <span class="kw">INTO</span> lr_pracownik;</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>  <span class="cf">IF</span> cur_dane_pracownika<span class="dt">%NOTFOUND</span> <span class="cf">THEN</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">CLOSE</span> cur_dane_pracownika;</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    RAISE e_nieprawidlowy_id;</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>  <span class="cf">END</span> <span class="cf">IF</span>;</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>  <span class="kw">CLOSE</span> cur_dane_pracownika;</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>  l_podstawa <span class="op">:=</span> lr_pracownik.wynagrodzenie_podstawowe;</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>  <span class="cf">IF</span> i_uwzglednij_bonus <span class="cf">THEN</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>    l_bonus <span class="op">:=</span> lr_pracownik.premia_roczna <span class="op">*</span> c_bonus_multiplier;</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>  <span class="cf">END</span> <span class="cf">IF</span>;</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>  o_wynagrodzenie <span class="op">:=</span> l_podstawa <span class="op">+</span> l_bonus;</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>  io_komunikat <span class="op">:=</span> io_komunikat <span class="op">||</span> <span class="st">&#39; - Przeliczono z bonusem: &#39;</span> <span class="op">||</span> l_bonus;</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a><span class="kw">EXCEPTION</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>  <span class="cf">WHEN</span> e_nieprawidlowy_id <span class="cf">THEN</span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>    RAISE_APPLICATION_ERROR(<span class="op">-</span><span class="dv">20001</span>, <span class="st">&#39;Nie znaleziono pracownika o ID: &#39;</span> <span class="op">||</span> i_id_pracownika);</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="cf">END</span> oblicz_wynagrodzenie;</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a><span class="op">/</span></span></code></pre></div>
+<p><strong>Wyjaśnienie:</strong> Standardowe prefiksy pozwalają
+natychmiast zidentyfikować typ i zakres zmiennej. Szczególnie ważne jest
+rozróżnienie między zmiennymi lokalnymi (<code>l_</code>) a globalnymi
+(<code>g_</code>), oraz między różnymi typami kolekcji i rekordów.
+Stosowanie wyjątków z prefiksem <code>e_</code> ułatwia identyfikację
+własnych wyjątków biznesowych.</p>
+<hr />
+<h2 id="wcięcia-i-formatowanie">Wcięcia i formatowanie</h2>
+<h3 id="wcięcia">2.1 Wcięcia</h3>
+<p><strong>Założenie:</strong> Używaj 2 spacji dla każdego poziomu
+wcięcia. Nie używaj tabulatorów.</p>
+<p><strong>Przykład:</strong></p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- ✓ POPRAWNIE</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">IF</span> l_wartosc <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">THEN</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">FOR</span> i <span class="kw">IN</span> <span class="dv">1</span><span class="op">..</span><span class="dv">10</span> <span class="cf">LOOP</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>      <span class="cf">IF</span> i <span class="fu">MOD</span> <span class="dv">2</span> <span class="op">=</span> <span class="dv">0</span> <span class="cf">THEN</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        DBMS_OUTPUT.PUT_LINE(<span class="st">&#39;Parzysta: &#39;</span> <span class="op">||</span> i);</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>      <span class="cf">ELSE</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        DBMS_OUTPUT.PUT_LINE(<span class="st">&#39;Nieparzysta: &#39;</span> <span class="op">||</span> i);</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>      <span class="cf">END</span> <span class="cf">IF</span>;</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">END</span> <span class="cf">LOOP</span>;</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">END</span> <span class="cf">IF</span>;</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="cf">END</span>;</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="op">/</span></span></code></pre></div>
+<p><strong>Wyjaśnienie:</strong> Konsekwentne wcięcia tworzą wizualną
+hierarchię struktury kodu, ułatwiając identyfikację bloków BEGIN-END,
+pętli i instrukcji warunkowych. 2 spacje oferują dobry kompromis między
+czytelnością a oszczędnością miejsca, jednocześnie zwiększając
+czytelność w długich blokach kodu z wieloma poziomami zagnieżdżenia.</p>
+<h3 id="formatowanie-bloków-begin-end">2.2 Formatowanie bloków
+BEGIN-END</h3>
+<p><strong>Założenie:</strong> Słowa kluczowe BEGIN i END umieszczaj na
+osobnych liniach, na tym samym poziomie wcięcia.</p>
+<p><strong>Przykład:</strong></p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- ✓ POPRAWNIE</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">PROCEDURE</span> proces_zamowienia (</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  i_id_zamowienia <span class="kw">IN</span> <span class="dt">NUMBER</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>) <span class="kw">IS</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  l_status <span class="dt">VARCHAR2</span>(<span class="dv">20</span>);</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span> z.status </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">INTO</span> l_status</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> zamowienia z</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>   <span class="kw">WHERE</span> z.id_zamowienia <span class="op">=</span> i_id_zamowienia;</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">IF</span> l_status <span class="op">=</span> <span class="st">&#39;NOWE&#39;</span> <span class="cf">THEN</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">BEGIN</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>      <span class="co">-- Zagnieżdżony blok</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">UPDATE</span> zamowienia z</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>         <span class="kw">SET</span> z.status <span class="op">=</span> <span class="st">&#39;W_REALIZACJI&#39;</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>       <span class="kw">WHERE</span> z.id_zamowienia <span class="op">=</span> i_id_zamowienia;</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>      <span class="kw">COMMIT</span>;</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">EXCEPTION</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>      <span class="cf">WHEN</span> OTHERS <span class="cf">THEN</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>        <span class="kw">ROLLBACK</span>;</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>        RAISE;</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">END</span>;</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">END</span> <span class="cf">IF</span>;</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="cf">END</span> proces_zamowienia;</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="op">/</span></span></code></pre></div>
+<p><strong>Wyjaśnienie:</strong> Umieszczanie BEGIN i END na osobnych
+liniach z odpowiednim wcięciem tworzy czytelną strukturę blokową. Każdy
+blok jest wyraźnie odgraniczony, co ułatwia debugowanie i zrozumienie
+logiki programu.</p>
+<hr />
+<h2 id="instrukcje-sql">Instrukcje SQL</h2>
+<h3 id="formatowanie-select">3.1 Formatowanie SELECT</h3>
+<p><strong>Założenie:</strong> Umieszczaj każdą kolumnę w SELECT na
+osobnej linii. Klauzule (FROM, WHERE, ORDER BY) rozpoczynaj od nowej
+linii.</p>
+<p><strong>Przykład:</strong></p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- ✓ POPRAWNIE</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  p.id_pracownika,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  p.imie,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  p.nazwisko,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  p.data_zatrudnienia,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  d.nazwa <span class="kw">AS</span> nazwa_dzialu,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  d.lokalizacja,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  s.stanowisko,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  s.wynagrodzenie</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> </span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  pracownicy p</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">INNER</span> <span class="kw">JOIN</span> dzialy d </span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ON</span> p.id_dzialu <span class="op">=</span> d.id_dzialu</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">LEFT</span> <span class="kw">JOIN</span> stanowiska s </span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ON</span> p.id_stanowiska <span class="op">=</span> s.id_stanowiska</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> </span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  p.aktywny <span class="op">=</span> <span class="st">&#39;T&#39;</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> p.data_zatrudnienia <span class="op">&gt;=</span> <span class="fu">ADD_MONTHS</span>(<span class="fu">SYSDATE</span>, <span class="op">-</span><span class="dv">12</span>)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> d.lokalizacja <span class="kw">IN</span> (<span class="st">&#39;Warszawa&#39;</span>, <span class="st">&#39;Kraków&#39;</span>, <span class="st">&#39;Wrocław&#39;</span>)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  d.nazwa,</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>  p.nazwisko,</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  p.imie;</span></code></pre></div>
+<p><strong>Wyjaśnienie:</strong> Umieszczanie każdej kolumny na osobnej
+linii pozwala łatwo zobaczyć wszystkie wybierane pola. W JOIN-ach
+klauzula <code>ON</code> powinna być w nowej linii z wcięciem dla
+lepszej czytelności warunków łączenia. Formatowanie klauzul WHERE z
+warunkami na oddzielnych liniach ułatwia modyfikację zapytań i szybkie
+lokalizowanie błędów logicznych.</p>
+<h3 id="formatowanie-insert">3.2 Formatowanie INSERT</h3>
+<p><strong>Założenie:</strong> Wymień wszystkie kolumny jawnie,
+umieszczając je na osobnych liniach lub grupując logicznie.</p>
+<p><strong>Przykład:</strong></p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- ✓ POPRAWNIE - dla małej liczby kolumn</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> pracownicy (</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  id_pracownika,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  imie,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  nazwisko,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  email,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  data_zatrudnienia</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>) <span class="kw">VALUES</span> (</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  pracownicy_id_seq.NEXTVAL,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;Jan&#39;</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;Kowalski&#39;</span>,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;jan.kowalski@firma.pl&#39;</span>,</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">SYSDATE</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>);</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">-- ✓ POPRAWNIE - dla większej liczby kolumn</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> pracownicy (</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  id_pracownika, </span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  imie, </span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  nazwisko, </span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  email,</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  telefon, </span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  adres, </span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  kod_pocztowy, </span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  miasto,</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  data_zatrudnienia, </span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  id_dzialu, </span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>  id_stanowiska</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>) <span class="kw">VALUES</span> (</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>  pracownicy_id_seq.NEXTVAL, </span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;Jan&#39;</span>, </span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;Kowalski&#39;</span>, </span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;jan.kowalski@firma.pl&#39;</span>,</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;123456789&#39;</span>, </span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;ul. Główna 1&#39;</span>, </span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;00-001&#39;</span>, </span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;Warszawa&#39;</span>,</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">SYSDATE</span>, </span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>  <span class="dv">10</span>, </span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>  <span class="dv">5</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
+<p><strong>Wyjaśnienie:</strong> Jawne wymienianie kolumn zapobiega
+błędom przy zmianach struktury tabeli (dodanie/usunięcie kolumn).
+Grupowanie wartości w logiczne zestawy (dane osobowe, adresowe,
+służbowe) zwiększa czytelność dla tabel z wieloma kolumnami.</p>
+<h3 id="formatowanie-update">3.3 Formatowanie UPDATE</h3>
+<p><strong>Założenie:</strong> Każde przypisanie SET na osobnej linii.
+Warunki WHERE z odpowiednim wcięciem.</p>
+<p><strong>Przykład:</strong></p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- ✓ POPRAWNIE</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">UPDATE</span> pracownicy p</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>   <span class="kw">SET</span> p.wynagrodzenie <span class="op">=</span> p.wynagrodzenie <span class="op">*</span> <span class="fl">1.1</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>       p.data_ostatniej_podwyzki <span class="op">=</span> <span class="fu">SYSDATE</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>       p.zaktualizowal <span class="op">=</span> <span class="fu">USER</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>       p.data_aktualizacji <span class="op">=</span> <span class="fu">SYSTIMESTAMP</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a> <span class="kw">WHERE</span> p.id_dzialu <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>   <span class="kw">AND</span> p.ocena_roczna <span class="op">&gt;=</span> <span class="dv">4</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>   <span class="kw">AND</span> p.data_ostatniej_podwyzki <span class="op">&lt;</span> <span class="fu">ADD_MONTHS</span>(<span class="fu">SYSDATE</span>, <span class="op">-</span><span class="dv">12</span>);</span></code></pre></div>
+<p><strong>Wyjaśnienie:</strong> Rozdzielenie każdego przypisania na
+osobną linię pozwala łatwo śledzić, które pola są aktualizowane.
+Używanie aliasu tabeli (<code>p</code>) zwiększa czytelność i jest
+spójne z praktykami stosowanymi w SELECT i JOIN. Jest to szczególnie
+ważne podczas code review i debugowania, gdy trzeba szybko
+zidentyfikować, co dokładnie jest zmieniane.</p>
+<hr />
+<h2 id="procedury-i-funkcje">Procedury i funkcje</h2>
+<h3 id="deklaracja-parametrów">4.1 Deklaracja parametrów</h3>
+<p><strong>Założenie:</strong> Każdy parametr na osobnej linii z
+wyrównaniem typów danych i trybów (IN/OUT/IN OUT). Używaj prefiksów: i_
+dla IN, o_ dla OUT, io_ dla IN OUT.</p>
+<p><strong>Przykład:</strong></p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- ✓ POPRAWNIE</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">PROCEDURE</span> przetworz_zamowienie (</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  i_id_zamowienia    <span class="kw">IN</span>     <span class="dt">NUMBER</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  i_id_klienta       <span class="kw">IN</span>     <span class="dt">NUMBER</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  i_tryb_platnosci   <span class="kw">IN</span>     <span class="dt">VARCHAR2</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  i_kod_rabatowy     <span class="kw">IN</span>     <span class="dt">VARCHAR2</span> <span class="kw">DEFAULT</span> <span class="kw">NULL</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  o_status_wynikowy  <span class="kw">OUT</span>    <span class="dt">VARCHAR2</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  o_kwota_koncowa    <span class="kw">OUT</span>    <span class="dt">NUMBER</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  io_komunikat_bledu <span class="kw">IN</span> <span class="kw">OUT</span> <span class="dt">VARCHAR2</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>) <span class="kw">IS</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  l_rabat        <span class="dt">NUMBER</span> <span class="op">:=</span> <span class="dv">0</span>;</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  l_kwota_brutto <span class="dt">NUMBER</span>;</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  l_kwota_netto  <span class="dt">NUMBER</span>;</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Implementacja</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">NULL</span>;</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="cf">END</span> przetworz_zamowienie;</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="op">/</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="op">**</span>Wyjaśnienie:<span class="op">**</span> Wyrównanie parametrów w kolumnach (nazwa, tryb, typ) tworzy czytelną <span class="ot">&quot;tabelę&quot;</span> parametrów. Prefiksy i_, o_, io_ natychmiast informują o kierunku przepływu danych. Łatwo zauważyć, które parametry są wejściowe, wyjściowe czy dwukierunkowe. Wyrównanie typów danych pomaga szybko zidentyfikować niezgodności typów.</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>### <span class="fl">4.2</span> Struktura procedury<span class="op">/</span>funkcji</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="op">**</span>Założenie:<span class="op">**</span> Zachowaj spójną strukturę: nagłówek → deklaracje → ciało → obsługa wyjątków.</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="op">**</span>Przykład:<span class="op">**</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>```sql</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="co">-- ✓ POPRAWNIE</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">FUNCTION</span> oblicz_podatek (</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>  i_kwota_brutto   <span class="kw">IN</span> <span class="dt">NUMBER</span>,</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>  i_stawka_vat     <span class="kw">IN</span> <span class="dt">NUMBER</span> <span class="kw">DEFAULT</span> <span class="dv">23</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>) <span class="kw">RETURN</span> <span class="dt">NUMBER</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="kw">IS</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Sekcja deklaracji stałych</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>  c_max_kwota    <span class="kw">CONSTANT</span> <span class="dt">NUMBER</span> <span class="op">:=</span> <span class="dv">1000000</span>;</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>  c_min_stawka   <span class="kw">CONSTANT</span> <span class="dt">NUMBER</span> <span class="op">:=</span> <span class="dv">0</span>;</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Sekcja deklaracji zmiennych</span></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>  l_kwota_podatku  <span class="dt">NUMBER</span>;</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>  l_kwota_netto    <span class="dt">NUMBER</span>;</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Sekcja deklaracji wyjątków własnych</span></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>  e_nieprawidlowa_kwota  <span class="kw">EXCEPTION</span>;</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>  e_nieprawidlowa_stawka <span class="kw">EXCEPTION</span>;</span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Walidacja danych wejściowych</span></span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>  <span class="cf">IF</span> i_kwota_brutto <span class="op">&lt;=</span> <span class="dv">0</span> </span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>    <span class="kw">OR</span> i_kwota_brutto <span class="op">&gt;</span> c_max_kwota </span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>  <span class="cf">THEN</span></span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a>    RAISE e_nieprawidlowa_kwota;</span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>  <span class="cf">END</span> <span class="cf">IF</span>;</span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a>  <span class="cf">IF</span> i_stawka_vat <span class="op">&lt;</span> c_min_stawka </span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a>    <span class="kw">OR</span> i_stawka_vat <span class="op">&gt;</span> <span class="dv">100</span> </span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a>  <span class="cf">THEN</span></span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a>    RAISE e_nieprawidlowa_stawka;</span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a>  <span class="cf">END</span> <span class="cf">IF</span>;</span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Logika biznesowa</span></span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>  l_kwota_netto <span class="op">:=</span> i_kwota_brutto <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> i_stawka_vat <span class="op">/</span> <span class="dv">100</span>);</span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a>  l_kwota_podatku <span class="op">:=</span> i_kwota_brutto <span class="op">-</span> l_kwota_netto;</span>
+<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Logowanie</span></span>
+<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a>  <span class="kw">INSERT</span> <span class="kw">INTO</span> logi_podatkowe (</span>
+<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a>    data_obliczenia,</span>
+<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a>    kwota_brutto,</span>
+<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a>    stawka_vat,</span>
+<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a>    kwota_podatku</span>
+<span id="cb9-70"><a href="#cb9-70" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">VALUES</span> (</span>
+<span id="cb9-71"><a href="#cb9-71" aria-hidden="true" tabindex="-1"></a>    <span class="fu">SYSTIMESTAMP</span>,</span>
+<span id="cb9-72"><a href="#cb9-72" aria-hidden="true" tabindex="-1"></a>    i_kwota_brutto,</span>
+<span id="cb9-73"><a href="#cb9-73" aria-hidden="true" tabindex="-1"></a>    i_stawka_vat,</span>
+<span id="cb9-74"><a href="#cb9-74" aria-hidden="true" tabindex="-1"></a>    l_kwota_podatku</span>
+<span id="cb9-75"><a href="#cb9-75" aria-hidden="true" tabindex="-1"></a>  );</span>
+<span id="cb9-76"><a href="#cb9-76" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-77"><a href="#cb9-77" aria-hidden="true" tabindex="-1"></a>  <span class="kw">RETURN</span> <span class="fu">ROUND</span>(l_kwota_podatku, <span class="dv">2</span>);</span>
+<span id="cb9-78"><a href="#cb9-78" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-79"><a href="#cb9-79" aria-hidden="true" tabindex="-1"></a><span class="kw">EXCEPTION</span></span>
+<span id="cb9-80"><a href="#cb9-80" aria-hidden="true" tabindex="-1"></a>  <span class="cf">WHEN</span> e_nieprawidlowa_kwota <span class="cf">THEN</span></span>
+<span id="cb9-81"><a href="#cb9-81" aria-hidden="true" tabindex="-1"></a>    RAISE_APPLICATION_ERROR(<span class="op">-</span><span class="dv">20001</span>, </span>
+<span id="cb9-82"><a href="#cb9-82" aria-hidden="true" tabindex="-1"></a>      <span class="st">&#39;Kwota brutto musi być między 0 a &#39;</span> <span class="op">||</span> c_max_kwota);</span>
+<span id="cb9-83"><a href="#cb9-83" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-84"><a href="#cb9-84" aria-hidden="true" tabindex="-1"></a>  <span class="cf">WHEN</span> e_nieprawidlowa_stawka <span class="cf">THEN</span></span>
+<span id="cb9-85"><a href="#cb9-85" aria-hidden="true" tabindex="-1"></a>    RAISE_APPLICATION_ERROR(<span class="op">-</span><span class="dv">20002</span>, </span>
+<span id="cb9-86"><a href="#cb9-86" aria-hidden="true" tabindex="-1"></a>      <span class="st">&#39;Stawka VAT musi być między 0 a 100&#39;</span>);</span>
+<span id="cb9-87"><a href="#cb9-87" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-88"><a href="#cb9-88" aria-hidden="true" tabindex="-1"></a>  <span class="cf">WHEN</span> OTHERS <span class="cf">THEN</span></span>
+<span id="cb9-89"><a href="#cb9-89" aria-hidden="true" tabindex="-1"></a>    RAISE_APPLICATION_ERROR(<span class="op">-</span><span class="dv">20999</span>, </span>
+<span id="cb9-90"><a href="#cb9-90" aria-hidden="true" tabindex="-1"></a>      <span class="st">&#39;Błąd podczas obliczania podatku: &#39;</span> <span class="op">||</span> SQLERRM);</span>
+<span id="cb9-91"><a href="#cb9-91" aria-hidden="true" tabindex="-1"></a><span class="cf">END</span> oblicz_podatek;</span>
+<span id="cb9-92"><a href="#cb9-92" aria-hidden="true" tabindex="-1"></a><span class="op">/</span></span></code></pre></div>
+<p><strong>Wyjaśnienie:</strong> Uporządkowana struktura z wyraźnie
+oddzielonymi sekcjami (stałe, zmienne, wyjątki, walidacja, logika,
+obsługa błędów) sprawia, że kod jest przewidywalny i łatwy w nawigacji.
+Programista wie, gdzie szukać konkretnych elementów. Grupowanie
+deklaracji według typu ułatwia zarządzanie zakresem zmiennych.</p>
+<hr />
+<h2 id="obsługa-wyjątków">Obsługa wyjątków</h2>
+<h3 id="struktura-exception">5.1 Struktura EXCEPTION</h3>
+<p><strong>Założenie:</strong> Obsługuj wyjątki specyficzne przed
+ogólnym WHEN OTHERS. Zawsze loguj błędy.</p>
+<p><strong>Przykład:</strong></p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- ✓ POPRAWNIE</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">PROCEDURE</span> aktualizuj_zamowienie (</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  i_id_zamowienia <span class="kw">IN</span> <span class="dt">NUMBER</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  i_nowy_status   <span class="kw">IN</span> <span class="dt">VARCHAR2</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>) <span class="kw">IS</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  l_aktualny_status <span class="dt">VARCHAR2</span>(<span class="dv">20</span>);</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  e_nieprawidlowy_status <span class="kw">EXCEPTION</span>;</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  e_zamowienie_nieznalezione <span class="kw">EXCEPTION</span>;</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Sprawdzenie istnienia zamówienia</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">BEGIN</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span> z.status </span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">INTO</span> l_aktualny_status</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>      <span class="kw">FROM</span> zamowienia z</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>     <span class="kw">WHERE</span> z.id_zamowienia <span class="op">=</span> i_id_zamowienia;</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">EXCEPTION</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">WHEN</span> NO_DATA_FOUND <span class="cf">THEN</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>      RAISE e_zamowienie_nieznalezione;</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">END</span>;</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Walidacja statusu</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>  <span class="cf">IF</span> i_nowy_status <span class="kw">NOT</span> <span class="kw">IN</span> (<span class="st">&#39;NOWE&#39;</span>, <span class="st">&#39;W_REALIZACJI&#39;</span>, <span class="st">&#39;WYSLANE&#39;</span>, <span class="st">&#39;ZAKONCZONE&#39;</span>) <span class="cf">THEN</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    RAISE e_nieprawidlowy_status;</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>  <span class="cf">END</span> <span class="cf">IF</span>;</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Aktualizacja</span></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">UPDATE</span> zamowienia z</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>     <span class="kw">SET</span> z.status <span class="op">=</span> i_nowy_status,</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>         z.data_modyfikacji <span class="op">=</span> <span class="fu">SYSTIMESTAMP</span>,</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>         z.uzytkownik_modyfikujacy <span class="op">=</span> <span class="fu">USER</span></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>   <span class="kw">WHERE</span> z.id_zamowienia <span class="op">=</span> i_id_zamowienia;</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>  <span class="kw">COMMIT</span>;</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Logowanie sukcesu</span></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>  <span class="kw">INSERT</span> <span class="kw">INTO</span> logi_zmian (</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>    tabela, </span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>    id_rekordu, </span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>    akcja, </span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>    uzytkownik, </span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>    data_operacji</span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">VALUES</span> (</span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;ZAMOWIENIA&#39;</span>, </span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>    i_id_zamowienia, </span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;ZMIANA_STATUSU&#39;</span>, </span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">USER</span>, </span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>    <span class="fu">SYSTIMESTAMP</span></span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>  );</span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a><span class="kw">EXCEPTION</span></span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>  <span class="cf">WHEN</span> e_zamowienie_nieznalezione <span class="cf">THEN</span></span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ROLLBACK</span>;</span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- Logowanie błędu</span></span>
+<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a>    <span class="kw">INSERT</span> <span class="kw">INTO</span> logi_bledow (</span>
+<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a>      procedura, </span>
+<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>      komunikat, </span>
+<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>      uzytkownik, </span>
+<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a>      data_bledu</span>
+<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a>    ) <span class="kw">VALUES</span> (</span>
+<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a>      <span class="st">&#39;AKTUALIZUJ_ZAMOWIENIE&#39;</span>,</span>
+<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a>      <span class="st">&#39;Nie znaleziono zamówienia o ID: &#39;</span> <span class="op">||</span> i_id_zamowienia,</span>
+<span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a>      <span class="fu">USER</span>,</span>
+<span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a>      <span class="fu">SYSTIMESTAMP</span></span>
+<span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a>    );</span>
+<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a>    <span class="kw">COMMIT</span>;</span>
+<span id="cb10-68"><a href="#cb10-68" aria-hidden="true" tabindex="-1"></a>    RAISE_APPLICATION_ERROR(<span class="op">-</span><span class="dv">20001</span>, </span>
+<span id="cb10-69"><a href="#cb10-69" aria-hidden="true" tabindex="-1"></a>      <span class="st">&#39;Zamówienie o podanym ID nie istnieje&#39;</span>);</span>
+<span id="cb10-70"><a href="#cb10-70" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-71"><a href="#cb10-71" aria-hidden="true" tabindex="-1"></a>  <span class="cf">WHEN</span> e_nieprawidlowy_status <span class="cf">THEN</span></span>
+<span id="cb10-72"><a href="#cb10-72" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ROLLBACK</span>;</span>
+<span id="cb10-73"><a href="#cb10-73" aria-hidden="true" tabindex="-1"></a>    <span class="kw">INSERT</span> <span class="kw">INTO</span> logi_bledow (</span>
+<span id="cb10-74"><a href="#cb10-74" aria-hidden="true" tabindex="-1"></a>      procedura, </span>
+<span id="cb10-75"><a href="#cb10-75" aria-hidden="true" tabindex="-1"></a>      komunikat, </span>
+<span id="cb10-76"><a href="#cb10-76" aria-hidden="true" tabindex="-1"></a>      uzytkownik, </span>
+<span id="cb10-77"><a href="#cb10-77" aria-hidden="true" tabindex="-1"></a>      data_bledu</span>
+<span id="cb10-78"><a href="#cb10-78" aria-hidden="true" tabindex="-1"></a>    ) <span class="kw">VALUES</span> (</span>
+<span id="cb10-79"><a href="#cb10-79" aria-hidden="true" tabindex="-1"></a>      <span class="st">&#39;AKTUALIZUJ_ZAMOWIENIE&#39;</span>,</span>
+<span id="cb10-80"><a href="#cb10-80" aria-hidden="true" tabindex="-1"></a>      <span class="st">&#39;Nieprawidłowy status: &#39;</span> <span class="op">||</span> i_nowy_status,</span>
+<span id="cb10-81"><a href="#cb10-81" aria-hidden="true" tabindex="-1"></a>      <span class="fu">USER</span>,</span>
+<span id="cb10-82"><a href="#cb10-82" aria-hidden="true" tabindex="-1"></a>      <span class="fu">SYSTIMESTAMP</span></span>
+<span id="cb10-83"><a href="#cb10-83" aria-hidden="true" tabindex="-1"></a>    );</span>
+<span id="cb10-84"><a href="#cb10-84" aria-hidden="true" tabindex="-1"></a>    <span class="kw">COMMIT</span>;</span>
+<span id="cb10-85"><a href="#cb10-85" aria-hidden="true" tabindex="-1"></a>    RAISE_APPLICATION_ERROR(<span class="op">-</span><span class="dv">20002</span>, </span>
+<span id="cb10-86"><a href="#cb10-86" aria-hidden="true" tabindex="-1"></a>      <span class="st">&#39;Nieprawidłowy status zamówienia&#39;</span>);</span>
+<span id="cb10-87"><a href="#cb10-87" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-88"><a href="#cb10-88" aria-hidden="true" tabindex="-1"></a>  <span class="cf">WHEN</span> OTHERS <span class="cf">THEN</span></span>
+<span id="cb10-89"><a href="#cb10-89" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ROLLBACK</span>;</span>
+<span id="cb10-90"><a href="#cb10-90" aria-hidden="true" tabindex="-1"></a>    <span class="kw">INSERT</span> <span class="kw">INTO</span> logi_bledow (</span>
+<span id="cb10-91"><a href="#cb10-91" aria-hidden="true" tabindex="-1"></a>      procedura, </span>
+<span id="cb10-92"><a href="#cb10-92" aria-hidden="true" tabindex="-1"></a>      komunikat, </span>
+<span id="cb10-93"><a href="#cb10-93" aria-hidden="true" tabindex="-1"></a>      kod_bledu, </span>
+<span id="cb10-94"><a href="#cb10-94" aria-hidden="true" tabindex="-1"></a>      uzytkownik, </span>
+<span id="cb10-95"><a href="#cb10-95" aria-hidden="true" tabindex="-1"></a>      data_bledu</span>
+<span id="cb10-96"><a href="#cb10-96" aria-hidden="true" tabindex="-1"></a>    ) <span class="kw">VALUES</span> (</span>
+<span id="cb10-97"><a href="#cb10-97" aria-hidden="true" tabindex="-1"></a>      <span class="st">&#39;AKTUALIZUJ_ZAMOWIENIE&#39;</span>,</span>
+<span id="cb10-98"><a href="#cb10-98" aria-hidden="true" tabindex="-1"></a>      SQLERRM,</span>
+<span id="cb10-99"><a href="#cb10-99" aria-hidden="true" tabindex="-1"></a>      SQLCODE,</span>
+<span id="cb10-100"><a href="#cb10-100" aria-hidden="true" tabindex="-1"></a>      <span class="fu">USER</span>,</span>
+<span id="cb10-101"><a href="#cb10-101" aria-hidden="true" tabindex="-1"></a>      <span class="fu">SYSTIMESTAMP</span></span>
+<span id="cb10-102"><a href="#cb10-102" aria-hidden="true" tabindex="-1"></a>    );</span>
+<span id="cb10-103"><a href="#cb10-103" aria-hidden="true" tabindex="-1"></a>    <span class="kw">COMMIT</span>;</span>
+<span id="cb10-104"><a href="#cb10-104" aria-hidden="true" tabindex="-1"></a>    RAISE;</span>
+<span id="cb10-105"><a href="#cb10-105" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-106"><a href="#cb10-106" aria-hidden="true" tabindex="-1"></a><span class="cf">END</span> aktualizuj_zamowienie;</span>
+<span id="cb10-107"><a href="#cb10-107" aria-hidden="true" tabindex="-1"></a><span class="op">/</span></span></code></pre></div>
+<p><strong>Wyjaśnienie:</strong> Prawidłowa obsługa wyjątków jest
+kluczowa dla stabilności aplikacji. Obsługa specyficznych wyjątków przed
+WHEN OTHERS pozwala na precyzyjną reakcję na różne sytuacje błędne.
+Logowanie błędów jest niezbędne do debugowania i monitorowania. Nigdy
+nie używaj pustego WHEN OTHERS, który ukrywa błędy.</p>
+<hr />
+<h2 id="komentarze-i-dokumentacja">Komentarze i dokumentacja</h2>
+<h3 id="komentarze-nagłówkowe">6.1 Komentarze nagłówkowe</h3>
+<p><strong>Założenie:</strong> Każda procedura/funkcja powinna mieć
+komentarz nagłówkowy opisujący cel, parametry, wartość zwracaną i
+autora.</p>
+<p><strong>Przykład:</strong></p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- ✓ POPRAWNIE</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">/*******************************************************************************</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"> * Nazwa: oblicz_wynagrodzenie_roczne</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"> * Cel: Oblicza roczne wynagrodzenie pracownika z uwzględnieniem premii i bonusów</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"> * Parametry:</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"> *   i_id_pracownika  - ID pracownika (klucz główny tabeli PRACOWNICY)</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"> *   i_rok      - Rok, dla którego obliczamy wynagrodzenie</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"> *   i_uwzglednij_bonus - Czy uwzględnić bonus roczny (domyślnie TAK)</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co"> * Zwraca:</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co"> *   NUMBER - Całkowite wynagrodzenie roczne w PLN</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co"> * Wyjątki:</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co"> *   -20001: Nie znaleziono pracownika o podanym ID</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co"> *   -20002: Nieprawidłowy rok (mniejszy niż rok zatrudnienia)</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="co"> * Historia zmian:</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co"> *   2025-11-07  Jan Kowalski  Utworzenie</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co"> *   2025-10-15  Anna Nowak  Dodanie obsługi bonusów kwartalnych</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="co"> * Przykład użycia:</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="co"> *   DECLARE</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="co"> *   l_wynagrodzenie NUMBER;</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="co"> *   </span><span class="re">BEGIN</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="co"> *   l_wynagrodzenie := oblicz_wynagrodzenie_roczne(</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="co"> *     i_id_pracownika =&gt; 1001,</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="co"> *     i_rok =&gt; 2025,</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="co"> *     i_uwzglednij_bonus =&gt; TRUE</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="co"> *   );</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="co"> *   DBMS_OUTPUT.PUT_LINE(&#39;Wynagrodzenie: &#39; || l_wynagrodzenie);</span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="co"> *   </span><span class="re">END</span><span class="co">;</span></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="co"> ******************************************************************************/</span></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">FUNCTION</span> oblicz_wynagrodzenie_roczne (</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>  i_id_pracownika  <span class="kw">IN</span> <span class="dt">NUMBER</span>,</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>  i_rok      <span class="kw">IN</span> <span class="dt">NUMBER</span>,</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>  i_uwzglednij_bonus   <span class="kw">IN</span> <span class="dt">BOOLEAN</span> <span class="kw">DEFAULT</span> <span class="kw">TRUE</span></span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>) <span class="kw">RETURN</span> <span class="dt">NUMBER</span></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a><span class="kw">IS</span></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>  l_wynagrodzenie_podstawowe <span class="dt">NUMBER</span>;</span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>  l_premie         <span class="dt">NUMBER</span> <span class="op">:=</span> <span class="dv">0</span>;</span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>  l_bonusy         <span class="dt">NUMBER</span> <span class="op">:=</span> <span class="dv">0</span>;</span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Implementacja</span></span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>  <span class="kw">RETURN</span> l_wynagrodzenie_podstawowe <span class="op">+</span> l_premie <span class="op">+</span> l_bonusy;</span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a><span class="cf">END</span> oblicz_wynagrodzenie_roczne;</span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a><span class="op">/</span></span></code></pre></div>
+<p><strong>Wyjaśnienie:</strong> Szczegółowy komentarz nagłówkowy służy
+jako dokumentacja API dla innych programistów. Zawiera wszystkie
+informacje niezbędne do prawidłowego użycia procedury/funkcji bez
+konieczności czytania implementacji. Historia zmian pozwala śledzić
+ewolucję kodu.</p>
+<h3 id="komentarze-w-kodzie">6.2 Komentarze w kodzie</h3>
+<p><strong>Założenie:</strong> Komentuj “dlaczego”, nie “co”. Używaj
+komentarzy do wyjaśnienia logiki biznesowej i nietypowych rozwiązań.</p>
+<p><strong>Przykład:</strong></p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- ✓ POPRAWNIE</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">PROCEDURE</span> przelicz_zamowienia <span class="kw">IS</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  l_kurs_waluty <span class="dt">NUMBER</span>;</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Pobieramy kurs z NBP dla daty bieżącej, ale jeśli nie ma kursu</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- (np. weekend), cofamy się do ostatniego dnia roboczego</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">BEGIN</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span> k.kurs </span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>      <span class="kw">INTO</span> l_kurs_waluty</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">FROM</span> kursy_nbp k</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>     <span class="kw">WHERE</span> k.waluta <span class="op">=</span> <span class="st">&#39;EUR&#39;</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>       <span class="kw">AND</span> k.data_kursu <span class="op">=</span> <span class="fu">TRUNC</span>(<span class="fu">SYSDATE</span>);</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">EXCEPTION</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">WHEN</span> NO_DATA_FOUND <span class="cf">THEN</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>      <span class="co">-- Szukamy ostatniego dostępnego kursu (max 7 dni wstecz)</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>      <span class="kw">SELECT</span> k.kurs</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>        <span class="kw">INTO</span> l_kurs_waluty</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>        <span class="kw">FROM</span> kursy_nbp k</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>       <span class="kw">WHERE</span> k.waluta <span class="op">=</span> <span class="st">&#39;EUR&#39;</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>         <span class="kw">AND</span> k.data_kursu <span class="op">=</span> (</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>        <span class="kw">SELECT</span> <span class="fu">MAX</span>(k2.data_kursu)</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>          <span class="kw">FROM</span> kursy_nbp k2</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>         <span class="kw">WHERE</span> k2.waluta <span class="op">=</span> <span class="st">&#39;EUR&#39;</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>           <span class="kw">AND</span> k2.data_kursu <span class="op">&lt;=</span> <span class="fu">TRUNC</span>(<span class="fu">SYSDATE</span>)</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>           <span class="kw">AND</span> data_kursu <span class="op">&gt;=</span> <span class="fu">TRUNC</span>(<span class="fu">SYSDATE</span>) <span class="op">-</span> <span class="dv">7</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>      );</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>  <span class="cf">END</span>;</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- UWAGA: Celowo nie używamy MERGE, ponieważ w naszej wersji Oracle (11g)</span></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- występuje znany bug przy MERGE z funkcjami deterministycznymi (Bug #14719814)</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>  <span class="cf">FOR</span> rec <span class="kw">IN</span> (<span class="kw">SELECT</span> z.id_zamowienia, </span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>                     z.kwota_eur </span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>                <span class="kw">FROM</span> zamowienia z </span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>               <span class="kw">WHERE</span> z.status <span class="op">=</span> <span class="st">&#39;AKTYWNE&#39;</span>) <span class="cf">LOOP</span></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">UPDATE</span> zamowienia z</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>       <span class="kw">SET</span> z.kwota_pln <span class="op">=</span> rec.kwota_eur <span class="op">*</span> l_kurs_waluty</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>     <span class="kw">WHERE</span> z.id_zamowienia <span class="op">=</span> rec.id_zamowienia;</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>  <span class="cf">END</span> <span class="cf">LOOP</span>;</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>  <span class="kw">COMMIT</span>;</span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a><span class="cf">END</span> przelicz_zamowienia;</span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a><span class="op">/</span></span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a><span class="op">**</span>Wyjaśnienie:<span class="op">**</span> Dobre komentarze wyjaśniają intencje i kontekst biznesowy, nie oczywiste operacje. Komentarz <span class="ot">&quot;pobieramy kurs&quot;</span> jest zbędny, bo kod jest czytelny. Natomiast wyjaśnienie, dlaczego cofamy się do ostatniego dnia roboczego lub dlaczego nie używamy <span class="kw">MERGE</span>, dostarcza cennej informacji, której nie da się wywnioskować z samego kodu.</span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>### <span class="fl">6.3</span> Nagłówki sekcji</span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a><span class="op">**</span>Założenie:<span class="op">**</span> Używaj komentarzy do oznaczenia głównych sekcji w dłuższych procedurach.</span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a><span class="op">**</span>Przykład:<span class="op">**</span></span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a>```sql</span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a><span class="co">-- ✓ POPRAWNIE</span></span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">PROCEDURE</span> kompleksowe_przetwarzanie_zamowien <span class="kw">IS</span></span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a>  <span class="co">/*==========================================================================</span></span>
+<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a><span class="co">   * SEKCJA 1: WALIDACJA I PRZYGOTOWANIE DANYCH</span></span>
+<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a><span class="co">   *==========================================================================*/</span></span>
+<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Sprawdzanie integralności danych wejściowych</span></span>
+<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a>  <span class="kw">NULL</span>;</span>
+<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a>  <span class="co">/*==========================================================================</span></span>
+<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a><span class="co">   * SEKCJA 2: PRZETWARZANIE GŁÓWNE</span></span>
+<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a><span class="co">   *==========================================================================*/</span></span>
+<span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Logika biznesowa przetwarzania zamówień</span></span>
+<span id="cb12-65"><a href="#cb12-65" aria-hidden="true" tabindex="-1"></a>  <span class="kw">NULL</span>;</span>
+<span id="cb12-66"><a href="#cb12-66" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-67"><a href="#cb12-67" aria-hidden="true" tabindex="-1"></a>  <span class="co">/*==========================================================================</span></span>
+<span id="cb12-68"><a href="#cb12-68" aria-hidden="true" tabindex="-1"></a><span class="co">   * SEKCJA 3: AGREGACJA I RAPORTOWANIE</span></span>
+<span id="cb12-69"><a href="#cb12-69" aria-hidden="true" tabindex="-1"></a><span class="co">   *==========================================================================*/</span></span>
+<span id="cb12-70"><a href="#cb12-70" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Generowanie statystyk i raportów</span></span>
+<span id="cb12-71"><a href="#cb12-71" aria-hidden="true" tabindex="-1"></a>  <span class="kw">NULL</span>;</span>
+<span id="cb12-72"><a href="#cb12-72" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-73"><a href="#cb12-73" aria-hidden="true" tabindex="-1"></a>  <span class="co">/*==========================================================================</span></span>
+<span id="cb12-74"><a href="#cb12-74" aria-hidden="true" tabindex="-1"></a><span class="co">   * SEKCJA 4: FINALIZACJA I CZYSZCZENIE</span></span>
+<span id="cb12-75"><a href="#cb12-75" aria-hidden="true" tabindex="-1"></a><span class="co">   *==========================================================================*/</span></span>
+<span id="cb12-76"><a href="#cb12-76" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Operacje końcowe i czyszczenie danych tymczasowych</span></span>
+<span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a>  <span class="kw">NULL</span>;</span>
+<span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a><span class="cf">END</span> kompleksowe_przetwarzanie_zamowien;</span>
+<span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a><span class="op">/</span></span></code></pre></div>
+<p><strong>Wyjaśnienie:</strong> W długich procedurach (powyżej 200
+linii) wizualne oddzielenie głównych sekcji znacząco ułatwia nawigację.
+Programista może szybko zlokalizować interesującą go część kodu.
+Nagłówki sekcji pełnią rolę “spisu treści” procedury.</p>
+<hr />
+<h2 id="najlepsze-praktyki">Najlepsze praktyki</h2>
+<h3 id="używanie-aliasów-tabel">7.1 Używanie aliasów tabel</h3>
+<p><strong>Założenie:</strong> Zawsze używaj krótkich, znaczących
+aliasów dla tabel, szczególnie w JOIN-ach.</p>
+<p><strong>Przykład:</strong></p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- ✓ POPRAWNIE</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  p.id_pracownika,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  p.nazwisko,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  d.nazwa <span class="kw">AS</span> nazwa_dzialu,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  m.nazwisko <span class="kw">AS</span> nazwisko_menadzera,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  s.wynagrodzenie</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> </span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  pracownicy p</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">INNER</span> <span class="kw">JOIN</span> dzialy d </span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ON</span> p.id_dzialu <span class="op">=</span> d.id_dzialu</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">LEFT</span> <span class="kw">JOIN</span> pracownicy m </span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ON</span> p.id_menadzera <span class="op">=</span> m.id_pracownika</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">INNER</span> <span class="kw">JOIN</span> stanowiska s </span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ON</span> p.id_stanowiska <span class="op">=</span> s.id_stanowiska</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> </span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  p.data_zatrudnienia <span class="op">&gt;=</span> <span class="fu">ADD_MONTHS</span>(<span class="fu">SYSDATE</span>, <span class="op">-</span><span class="dv">12</span>)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> d.aktywny <span class="op">=</span> <span class="st">&#39;T&#39;</span>;</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="op">**</span>Wyjaśnienie:<span class="op">**</span> Aliasy skracają zapytania i zwiększają czytelność, szczególnie przy wielu <span class="kw">JOIN</span><span class="op">-</span>ach. Używanie pełnych nazw tabel jest rozwlekłe i utrudnia szybkie skanowanie kodu. Dobrze dobrane aliasy (p dla pracownicy, d dla dzialy) są intuicyjne i łatwe do zapamiętania.</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>### <span class="fl">7.2</span> Formatowanie długich warunków</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="op">**</span>Założenie:<span class="op">**</span> Rozbijaj długie warunki logiczne na osobne linie z odpowiednim wcięciem, grupując operatory.</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="op">**</span>Przykład:<span class="op">**</span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>```sql</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a><span class="co">-- ✓ POPRAWNIE</span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> zamowienia z</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> </span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Warunki czasowe</span></span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>  (</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>    z.data_zamowienia <span class="op">&gt;=</span> <span class="fu">TO_DATE</span>(<span class="st">&#39;2025-01-01&#39;</span>, <span class="st">&#39;YYYY-MM-DD&#39;</span>)</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">AND</span> z.data_zamowienia <span class="op">&lt;</span> <span class="fu">TO_DATE</span>(<span class="st">&#39;2026-01-01&#39;</span>, <span class="st">&#39;YYYY-MM-DD&#39;</span>)</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Warunki statusowe</span></span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> (</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>    z.status <span class="kw">IN</span> (<span class="st">&#39;NOWE&#39;</span>, <span class="st">&#39;W_REALIZACJI&#39;</span>, <span class="st">&#39;WYSLANE&#39;</span>)</span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">OR</span> (z.status <span class="op">=</span> <span class="st">&#39;ANULOWANE&#39;</span> <span class="kw">AND</span> z.przyczyna_anulowania <span class="op">=</span> <span class="st">&#39;KLIENT&#39;</span>)</span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Warunki finansowe</span></span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> (</span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>    z.wartosc_brutto <span class="op">&gt;=</span> <span class="dv">1000</span></span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>    <span class="kw">OR</span> (z.wartosc_brutto <span class="op">&gt;=</span> <span class="dv">500</span> <span class="kw">AND</span> z.klient_vip <span class="op">=</span> <span class="st">&#39;T&#39;</span>)</span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Warunki dodatkowe</span></span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> z.kraj <span class="kw">IN</span> (<span class="st">&#39;PL&#39;</span>, <span class="st">&#39;DE&#39;</span>, <span class="st">&#39;CZ&#39;</span>)</span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> z.waluta <span class="op">=</span> <span class="st">&#39;PLN&#39;</span>;</span></code></pre></div>
+<p><strong>Wyjaśnienie:</strong> Grupowanie warunków według kategorii
+(czasowe, statusowe, finansowe) z komentarzami tworzy logiczną
+strukturę. Odpowiednie wcięcie pokazuje pierwszeństwo operatorów
+logicznych. To szczególnie ważne przy skomplikowanych warunkach
+biznesowych, gdzie błąd w nawiasach może prowadzić do nieprawidłowych
+wyników.</p>
+<h3 id="używanie-nazwanych-parametrów">7.3 Używanie nazwanych
+parametrów</h3>
+<p><strong>Założenie:</strong> Przy wywołaniach procedur/funkcji używaj
+nazwanych parametrów zamiast pozycyjnych.</p>
+<p><strong>Przykład:</strong></p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- ✓ POPRAWNIE</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="kw">DECLARE</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  l_wynik <span class="dt">VARCHAR2</span>(<span class="dv">100</span>);</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  przetworz_platnosc(</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    i_id_zamowienia <span class="op">=&gt;</span> <span class="dv">12345</span>,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    i_kwota <span class="op">=&gt;</span> <span class="fl">1500.00</span>,</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    i_waluta <span class="op">=&gt;</span> <span class="st">&#39;PLN&#39;</span>,</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    i_metoda_platnosci <span class="op">=&gt;</span> <span class="st">&#39;KARTA&#39;</span>,</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    o_status_wynikowy <span class="op">=&gt;</span> l_wynik</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  );</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  DBMS_OUTPUT.PUT_LINE(<span class="st">&#39;Status: &#39;</span> <span class="op">||</span> l_wynik);</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="cf">END</span>;</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="op">/</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="op">**</span>Wyjaśnienie:<span class="op">**</span> Nazwane parametry zwiększają czytelność i bezpieczeństwo kodu. Są odporne na zmianę kolejności parametrów w definicji procedury. Przy wywołaniu natychmiast widać, co oznacza każda wartość, bez konieczności sprawdzania sygnatur procedur.</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>### <span class="fl">7.4</span> Obsługa wartości <span class="kw">NULL</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="op">**</span>Założenie:<span class="op">**</span> Zawsze jawnie obsługuj potencjalne wartości <span class="kw">NULL</span> w warunkach i porównaniach.</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a><span class="op">**</span>Przykład:<span class="op">**</span></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>```sql</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a><span class="co">-- ✓ POPRAWNIE</span></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">FUNCTION</span> porownaj_wartosci (</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>  i_wartosc1 <span class="kw">IN</span> <span class="dt">NUMBER</span>,</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>  i_wartosc2 <span class="kw">IN</span> <span class="dt">NUMBER</span></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>) <span class="kw">RETURN</span> <span class="dt">VARCHAR2</span></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a><span class="kw">IS</span></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>  <span class="cf">IF</span> i_wartosc1 <span class="kw">IS</span> <span class="kw">NULL</span> <span class="kw">AND</span> i_wartosc2 <span class="kw">IS</span> <span class="kw">NULL</span> <span class="cf">THEN</span></span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">RETURN</span> <span class="st">&#39;OBIE_NULL&#39;</span>;</span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>  <span class="cf">ELSIF</span> i_wartosc1 <span class="kw">IS</span> <span class="kw">NULL</span> <span class="cf">THEN</span></span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">RETURN</span> <span class="st">&#39;PIERWSZA_NULL&#39;</span>;</span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>  <span class="cf">ELSIF</span> i_wartosc2 <span class="kw">IS</span> <span class="kw">NULL</span> <span class="cf">THEN</span></span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">RETURN</span> <span class="st">&#39;DRUGA_NULL&#39;</span>;</span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>  <span class="cf">ELSIF</span> i_wartosc1 <span class="op">=</span> i_wartosc2 <span class="cf">THEN</span></span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">RETURN</span> <span class="st">&#39;ROWNE&#39;</span>;</span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>  <span class="cf">ELSIF</span> i_wartosc1 <span class="op">&gt;</span> i_wartosc2 <span class="cf">THEN</span></span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">RETURN</span> <span class="st">&#39;PIERWSZA_WIEKSZA&#39;</span>;</span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a>  <span class="cf">ELSE</span></span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">RETURN</span> <span class="st">&#39;DRUGA_WIEKSZA&#39;</span>;</span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a>  <span class="cf">END</span> <span class="cf">IF</span>;</span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a><span class="cf">END</span> porownaj_wartosci;</span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a><span class="op">/</span></span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a><span class="co">-- Przykład użycia NVL i COALESCE</span></span>
+<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> p.id_pracownika,</span>
+<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a>       p.nazwisko,</span>
+<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a>       <span class="fu">NVL</span>(p.telefon_komorkowy, p.telefon_stacjonarny) <span class="kw">AS</span> telefon_kontaktowy,</span>
+<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a>       <span class="fu">COALESCE</span>(p.email_prywatny, p.email_firmowy, <span class="st">&#39;brak@email.pl&#39;</span>) <span class="kw">AS</span> email,</span>
+<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a>       <span class="fu">NVL</span>(p.premia, <span class="dv">0</span>) <span class="op">+</span> <span class="fu">NVL</span>(p.bonus, <span class="dv">0</span>) <span class="kw">AS</span> dodatki</span>
+<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> pracownicy p;</span></code></pre></div>
+<p><strong>Wyjaśnienie:</strong> NULL w SQL ma specjalną semantykę - nie
+jest równy niczemu, nawet innemu NULL. Brak obsługi NULL prowadzi do
+subtelnych błędów logicznych. Funkcje NVL i COALESCE pomagają zapewnić
+wartości domyślne, ale należy ich używać świadomie, rozumiejąc
+implikacje biznesowe zastępowania NULL wartością domyślną.</p>
+<h3 id="używanie-kursora-for-loop">7.5 Używanie kursora FOR LOOP</h3>
+<p><strong>Założenie:</strong> Preferuj niejawne kursory FOR LOOP
+zamiast jawnego otwierania i zamykania kursorów.</p>
+<p><strong>Przykład:</strong></p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- ✓ POPRAWNIE - kursor niejawny</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">PROCEDURE</span> aktualizuj_premie <span class="kw">IS</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">FOR</span> rec <span class="kw">IN</span> (</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span> p.id_pracownika,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>           p.wynagrodzenie,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>           p.ocena_roczna</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>      <span class="kw">FROM</span> pracownicy p</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>     <span class="kw">WHERE</span> p.data_zatrudnienia <span class="op">&lt;</span> <span class="fu">ADD_MONTHS</span>(<span class="fu">SYSDATE</span>, <span class="op">-</span><span class="dv">12</span>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>       <span class="kw">AND</span> p.aktywny <span class="op">=</span> <span class="st">&#39;T&#39;</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="cf">LOOP</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">UPDATE</span> pracownicy p</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>       <span class="kw">SET</span> p.premia <span class="op">=</span> rec.wynagrodzenie <span class="op">*</span> (rec.ocena_roczna <span class="op">/</span> <span class="dv">100</span>)</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>     <span class="kw">WHERE</span> p.id_pracownika <span class="op">=</span> rec.id_pracownika;</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">END</span> <span class="cf">LOOP</span>;</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">COMMIT</span>;</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="cf">END</span> aktualizuj_premie;</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="op">/</span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="co">-- ✓ AKCEPTOWALNE - kursor jawny z parametrem</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">PROCEDURE</span> generuj_raport (</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>  i_id_dzialu <span class="kw">IN</span> <span class="dt">NUMBER</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>) <span class="kw">IS</span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">CURSOR</span> c_pracownicy (cp_id_dzialu <span class="dt">NUMBER</span>) <span class="kw">IS</span></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span> p.id_pracownika,</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>           p.imie,</span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>           p.nazwisko,</span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>           p.wynagrodzenie</span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>      <span class="kw">FROM</span> pracownicy p</span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>     <span class="kw">WHERE</span> p.id_dzialu <span class="op">=</span> cp_id_dzialu</span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>     <span class="kw">ORDER</span> <span class="kw">BY</span> p.nazwisko;</span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>  l_suma_wynagrodzen <span class="dt">NUMBER</span> <span class="op">:=</span> <span class="dv">0</span>;</span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>  <span class="cf">FOR</span> rec <span class="kw">IN</span> c_pracownicy(i_id_dzialu) <span class="cf">LOOP</span></span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a>    DBMS_OUTPUT.PUT_LINE(rec.nazwisko <span class="op">||</span> <span class="st">&#39;: &#39;</span> <span class="op">||</span> rec.wynagrodzenie);</span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a>    l_suma_wynagrodzen <span class="op">:=</span> l_suma_wynagrodzen <span class="op">+</span> rec.wynagrodzenie;</span>
+<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a>  <span class="cf">END</span> <span class="cf">LOOP</span>;</span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a>  DBMS_OUTPUT.PUT_LINE(<span class="st">&#39;Suma: &#39;</span> <span class="op">||</span> l_suma_wynagrodzen);</span>
+<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a><span class="cf">END</span> generuj_raport;</span>
+<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a><span class="op">/</span></span></code></pre></div>
+<p><strong>Wyjaśnienie:</strong> Pętla FOR automatycznie otwiera kursor,
+pobiera wiersze i zamyka kursor, nawet w przypadku wyjątku. Eliminuje to
+ryzyko pozostawienia otwartego kursora (wyciek zasobów). Kod jest
+krótszy i bardziej czytelny. Jawne kursory są przydatne tylko wtedy, gdy
+potrzebujesz większej kontroli (np. kursory z parametrami, sprawdzanie
+%NOTFOUND w specyficznych przypadkach).</p>
+<h3 id="bulk-operations-bulk-collect-i-forall">7.6 Bulk operations (BULK
+COLLECT i FORALL)</h3>
+<p><strong>Założenie:</strong> Dla operacji na dużych zbiorach danych
+używaj bulk operations zamiast row-by-row processing.</p>
+<p><strong>Przykład:</strong></p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- ✓ POPRAWNIE - bulk operations dla wydajności</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">PROCEDURE</span> archiwizuj_stare_zamowienia <span class="kw">IS</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">TYPE</span> t_id_table <span class="kw">IS</span> <span class="kw">TABLE</span> <span class="kw">OF</span> zamowienia.id_zamowienia<span class="dt">%TYPE</span>;</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">TYPE</span> t_data_table <span class="kw">IS</span> <span class="kw">TABLE</span> <span class="kw">OF</span> zamowienia.data_zamowienia<span class="dt">%TYPE</span>;</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  l_ids t_id_table;</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  l_daty t_data_table;</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  c_limit <span class="kw">CONSTANT</span> <span class="dt">PLS_INTEGER</span> <span class="op">:=</span> <span class="dv">1000</span>; <span class="co">-- Przetwarzamy partiami</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Pobieranie danych bulk</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span> z.id_zamowienia, </span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>         z.data_zamowienia</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">BULK</span> <span class="fu">COLLECT</span> <span class="kw">INTO</span> l_ids, l_daty</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> zamowienia z</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>   <span class="kw">WHERE</span> z.data_zamowienia <span class="op">&lt;</span> <span class="fu">ADD_MONTHS</span>(<span class="fu">SYSDATE</span>, <span class="op">-</span><span class="dv">24</span>)</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>     <span class="kw">AND</span> z.status <span class="op">=</span> <span class="st">&#39;ZAKONCZONE&#39;</span>;</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Wstawianie do archiwum bulk</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>  FORALL i <span class="kw">IN</span> <span class="dv">1</span><span class="op">..</span>l_ids.<span class="fu">COUNT</span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">INSERT</span> <span class="kw">INTO</span> zamowienia_archiwum (</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>      id_zamowienia,</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>      data_zamowienia,</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>      data_archiwizacji</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>    ) <span class="kw">VALUES</span> (</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>      l_ids(i),</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>      l_daty(i),</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>      <span class="fu">SYSDATE</span></span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>    );</span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Usuwanie bulk</span></span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>  FORALL i <span class="kw">IN</span> <span class="dv">1</span><span class="op">..</span>l_ids.<span class="fu">COUNT</span></span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DELETE</span> <span class="kw">FROM</span> zamowienia z</span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">WHERE</span> z.id_zamowienia <span class="op">=</span> l_ids(i);</span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>  <span class="kw">COMMIT</span>;</span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>  DBMS_OUTPUT.PUT_LINE(<span class="st">&#39;Zarchiwizowano &#39;</span> <span class="op">||</span> l_ids.<span class="fu">COUNT</span> <span class="op">||</span> <span class="st">&#39; zamówień&#39;</span>);</span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a><span class="kw">EXCEPTION</span></span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>  <span class="cf">WHEN</span> OTHERS <span class="cf">THEN</span></span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ROLLBACK</span>;</span>
+<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>    RAISE;</span>
+<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a><span class="cf">END</span> archiwizuj_stare_zamowienia;</span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a><span class="op">/</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- ✓ POPRAWNIE - przetwarzanie partiami dla bardzo dużych zbiorów</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">PROCEDURE</span> aktualizuj_masowo <span class="kw">IS</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">TYPE</span> t_id_table <span class="kw">IS</span> <span class="kw">TABLE</span> <span class="kw">OF</span> pracownicy.id_pracownika<span class="dt">%TYPE</span>;</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  l_ids t_id_table;</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">CURSOR</span> c_pracownicy <span class="kw">IS</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span> p.id_pracownika</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>      <span class="kw">FROM</span> pracownicy p</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>     <span class="kw">WHERE</span> p.data_ostatniej_podwyzki <span class="op">&lt;</span> <span class="fu">ADD_MONTHS</span>(<span class="fu">SYSDATE</span>, <span class="op">-</span><span class="dv">12</span>);</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  c_limit <span class="kw">CONSTANT</span> <span class="dt">PLS_INTEGER</span> <span class="op">:=</span> <span class="dv">5000</span>;</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">OPEN</span> c_pracownicy;</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">LOOP</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    FETCH c_pracownicy <span class="kw">BULK</span> <span class="fu">COLLECT</span> <span class="kw">INTO</span> l_ids <span class="kw">LIMIT</span> c_limit;</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    EXIT <span class="cf">WHEN</span> l_ids.<span class="fu">COUNT</span> <span class="op">=</span> <span class="dv">0</span>;</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>    FORALL i <span class="kw">IN</span> <span class="dv">1</span><span class="op">..</span>l_ids.<span class="fu">COUNT</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>      <span class="kw">UPDATE</span> pracownicy p</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>         <span class="kw">SET</span> p.wynagrodzenie <span class="op">=</span> p.wynagrodzenie <span class="op">*</span> <span class="fl">1.05</span>,</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>             p.data_ostatniej_podwyzki <span class="op">=</span> <span class="fu">SYSDATE</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>       <span class="kw">WHERE</span> p.id_pracownika <span class="op">=</span> l_ids(i);</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">COMMIT</span>; <span class="co">-- Commit po każdej partii</span></span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>    DBMS_OUTPUT.PUT_LINE(<span class="st">&#39;Przetworzono partię: &#39;</span> <span class="op">||</span> l_ids.<span class="fu">COUNT</span> <span class="op">||</span> <span class="st">&#39; rekordów&#39;</span>);</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>  <span class="cf">END</span> <span class="cf">LOOP</span>;</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">CLOSE</span> c_pracownicy;</span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>  DBMS_OUTPUT.PUT_LINE(<span class="st">&#39;Zakończono przetwarzanie masowe&#39;</span>);</span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a><span class="cf">END</span> aktualizuj_masowo;</span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a><span class="op">/</span></span></code></pre></div>
+<p><strong>Wyjaśnienie:</strong> Bulk operations drastycznie zwiększają
+wydajność dla operacji na wielu wierszach, redukując context switching
+między silnikiem PL/SQL a SQL. BULK COLLECT pobiera wszystkie wiersze
+jednocześnie, a FORALL wykonuje wszystkie DML w jednej operacji. Dla
+bardzo dużych zbiorów danych używamy LIMIT, aby uniknąć przepełnienia
+pamięci. Różnica w wydajności może być 10-50x dla tysięcy rekordów.</p>
+<h3 id="transakcje-i-commit">7.7 Transakcje i COMMIT</h3>
+<p><strong>Założenie:</strong> Świadomie zarządzaj transakcjami. Unikaj
+auto-commit po każdej operacji.</p>
+<p><strong>Przykład:</strong></p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- ✓ POPRAWNIE - transakcje w jednostkach biznesowych</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">PROCEDURE</span> przetwórz_zamowienie (</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  i_id_zamowienia <span class="kw">IN</span> <span class="dt">NUMBER</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>) <span class="kw">IS</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  l_id_faktury <span class="dt">NUMBER</span>;</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  l_id_wysylki <span class="dt">NUMBER</span>;</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Jedna transakcja dla całej operacji biznesowej</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SAVEPOINT</span> przed_przetworzeniem;</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Krok 1: Aktualizacja statusu zamówienia</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">UPDATE</span> zamowienia z</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>     <span class="kw">SET</span> z.status <span class="op">=</span> <span class="st">&#39;W_REALIZACJI&#39;</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>   <span class="kw">WHERE</span> z.id_zamowienia <span class="op">=</span> i_id_zamowienia;</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Krok 2: Utworzenie faktury</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">INSERT</span> <span class="kw">INTO</span> faktury (</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>    id_zamowienia,</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>    data_wystawienia,</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>    kwota</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">VALUES</span> (</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>    i_id_zamowienia,</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">SYSDATE</span>,</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">SELECT</span> z.suma_zamowienia </span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>       <span class="kw">FROM</span> zamowienia z </span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>      <span class="kw">WHERE</span> z.id_zamowienia <span class="op">=</span> i_id_zamowienia)</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">RETURNING</span> id_faktury <span class="kw">INTO</span> l_id_faktury;</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Krok 3: Utworzenie zlecenia wysyłki</span></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>  <span class="kw">INSERT</span> <span class="kw">INTO</span> wysylki (</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>    id_zamowienia,</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>    id_faktury,</span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>    data_utworzenia,</span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>    status</span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">VALUES</span> (</span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>    i_id_zamowienia,</span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>    l_id_faktury,</span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">SYSDATE</span>,</span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;OCZEKUJE&#39;</span></span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">RETURNING</span> id_wysylki <span class="kw">INTO</span> l_id_wysylki;</span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Krok 4: Aktualizacja stanów magazynowych</span></span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>  <span class="kw">UPDATE</span> stany_magazynowe sm</span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>     <span class="kw">SET</span> ilosc <span class="op">=</span> ilosc <span class="op">-</span> pz.ilosc</span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> pozycje_zamowienia pz</span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a>   <span class="kw">WHERE</span> sm.id_produktu <span class="op">=</span> pz.id_produktu</span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a>     <span class="kw">AND</span> pz.id_zamowienia <span class="op">=</span> i_id_zamowienia;</span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Wszystko OK - zatwierdzamy całą transakcję biznesową</span></span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a>  <span class="kw">COMMIT</span>;</span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Logowanie sukcesu (w osobnej transakcji autonomicznej - patrz 7.8)</span></span>
+<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a>  log_operacja(<span class="st">&#39;PRZETWORZENIE_ZAMOWIENIA&#39;</span>, i_id_zamowienia, <span class="st">&#39;SUCCESS&#39;</span>);</span>
+<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-55"><a href="#cb18-55" aria-hidden="true" tabindex="-1"></a><span class="kw">EXCEPTION</span></span>
+<span id="cb18-56"><a href="#cb18-56" aria-hidden="true" tabindex="-1"></a>  <span class="cf">WHEN</span> OTHERS <span class="cf">THEN</span></span>
+<span id="cb18-57"><a href="#cb18-57" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- Coś poszło nie tak - wycofujemy całą operację</span></span>
+<span id="cb18-58"><a href="#cb18-58" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ROLLBACK</span> <span class="kw">TO</span> przed_przetworzeniem;</span>
+<span id="cb18-59"><a href="#cb18-59" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-60"><a href="#cb18-60" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- Logowanie błędu</span></span>
+<span id="cb18-61"><a href="#cb18-61" aria-hidden="true" tabindex="-1"></a>    log_operacja(<span class="st">&#39;PRZETWORZENIE_ZAMOWIENIA&#39;</span>, i_id_zamowienia, </span>
+<span id="cb18-62"><a href="#cb18-62" aria-hidden="true" tabindex="-1"></a>          <span class="st">&#39;ERROR: &#39;</span> <span class="op">||</span> SQLERRM);</span>
+<span id="cb18-63"><a href="#cb18-63" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-64"><a href="#cb18-64" aria-hidden="true" tabindex="-1"></a>    RAISE;</span>
+<span id="cb18-65"><a href="#cb18-65" aria-hidden="true" tabindex="-1"></a><span class="cf">END</span> przetworz_zamowienie;</span>
+<span id="cb18-66"><a href="#cb18-66" aria-hidden="true" tabindex="-1"></a><span class="op">/</span></span></code></pre></div>
+<p><strong>Wyjaśnienie:</strong> Transakcja powinna odpowiadać jednej
+kompletnej operacji biznesowej. Wszystkie powiązane zmiany w bazie
+powinny być zatwierdzone razem (atomowość). COMMIT po każdej operacji
+prowadzi do niespójności danych w przypadku błędu. Używanie SAVEPOINT
+pozwala na częściowe wycofanie bez utraty całej transakcji.</p>
+<h3 id="autonomous-transactions">7.8 Autonomous transactions</h3>
+<p><strong>Założenie:</strong> Używaj autonomous transactions dla
+operacji logowania, które powinny być zachowane niezależnie od głównej
+transakcji.</p>
+<p><strong>Przykład:</strong></p>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- ✓ POPRAWNIE - logowanie w transakcji autonomicznej</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">PROCEDURE</span> log_operacja (</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  i_nazwa_operacji <span class="kw">IN</span> <span class="dt">VARCHAR2</span>,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  i_id_obiektu   <span class="kw">IN</span> <span class="dt">NUMBER</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  i_status     <span class="kw">IN</span> <span class="dt">VARCHAR2</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  i_komunikat  <span class="kw">IN</span> <span class="dt">VARCHAR2</span> <span class="kw">DEFAULT</span> <span class="kw">NULL</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>) <span class="kw">IS</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  PRAGMA AUTONOMOUS_TRANSACTION; <span class="co">-- Kluczowa dyrektywa</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">INSERT</span> <span class="kw">INTO</span> logi_aplikacji (</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    id_logu,</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    data_operacji,</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    nazwa_operacji,</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    id_obiektu,</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    status,</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>    komunikat,</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    uzytkownik,</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>    sesja</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">VALUES</span> (</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>    logi_id_seq.NEXTVAL,</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">SYSTIMESTAMP</span>,</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>    i_nazwa_operacji,</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>    i_id_obiektu,</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>    i_status,</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>    i_komunikat,</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">USER</span>,</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">SYS_CONTEXT</span>(<span class="st">&#39;USERENV&#39;</span>, <span class="st">&#39;SESSIONID&#39;</span>)</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>  );</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Transakcja autonomiczna MUSI mieć własny COMMIT lub ROLLBACK</span></span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>  <span class="kw">COMMIT</span>;</span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a><span class="kw">EXCEPTION</span></span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>  <span class="cf">WHEN</span> OTHERS <span class="cf">THEN</span></span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- Nawet jeśli logowanie się nie powiedzie, nie przerywamy głównej operacji</span></span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ROLLBACK</span>;</span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- Możemy spróbować zapisać do pliku lub DBMS_OUTPUT</span></span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a>    DBMS_OUTPUT.PUT_LINE(<span class="st">&#39;Błąd logowania: &#39;</span> <span class="op">||</span> SQLERRM);</span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a><span class="cf">END</span> log_operacja;</span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a><span class="op">/</span></span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a><span class="co">-- Przykład użycia</span></span>
+<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">PROCEDURE</span> usun_pracownika (</span>
+<span id="cb19-44"><a href="#cb19-44" aria-hidden="true" tabindex="-1"></a>  i_id_pracownika <span class="kw">IN</span> <span class="dt">NUMBER</span></span>
+<span id="cb19-45"><a href="#cb19-45" aria-hidden="true" tabindex="-1"></a>) <span class="kw">IS</span></span>
+<span id="cb19-46"><a href="#cb19-46" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb19-47"><a href="#cb19-47" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Logujemy początek operacji (zostanie zachowane nawet przy ROLLBACK)</span></span>
+<span id="cb19-48"><a href="#cb19-48" aria-hidden="true" tabindex="-1"></a>  log_operacja(<span class="st">&#39;USUWANIE_PRACOWNIKA&#39;</span>, i_id_pracownika, <span class="st">&#39;START&#39;</span>);</span>
+<span id="cb19-49"><a href="#cb19-49" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-50"><a href="#cb19-50" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Główna operacja</span></span>
+<span id="cb19-51"><a href="#cb19-51" aria-hidden="true" tabindex="-1"></a>  <span class="kw">DELETE</span> <span class="kw">FROM</span> pracownicy p <span class="kw">WHERE</span> p.id_pracownika <span class="op">=</span> i_id_pracownika;</span>
+<span id="cb19-52"><a href="#cb19-52" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-53"><a href="#cb19-53" aria-hidden="true" tabindex="-1"></a>  <span class="cf">IF</span> SQL<span class="dt">%ROWCOUNT</span> <span class="op">=</span> <span class="dv">0</span> <span class="cf">THEN</span></span>
+<span id="cb19-54"><a href="#cb19-54" aria-hidden="true" tabindex="-1"></a>    log_operacja(<span class="st">&#39;USUWANIE_PRACOWNIKA&#39;</span>, i_id_pracownika, <span class="st">&#39;BRAK_PRACOWNIKA&#39;</span>);</span>
+<span id="cb19-55"><a href="#cb19-55" aria-hidden="true" tabindex="-1"></a>    RAISE_APPLICATION_ERROR(<span class="op">-</span><span class="dv">20001</span>, <span class="st">&#39;Pracownik nie istnieje&#39;</span>);</span>
+<span id="cb19-56"><a href="#cb19-56" aria-hidden="true" tabindex="-1"></a>  <span class="cf">END</span> <span class="cf">IF</span>;</span>
+<span id="cb19-57"><a href="#cb19-57" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-58"><a href="#cb19-58" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Logujemy sukces</span></span>
+<span id="cb19-59"><a href="#cb19-59" aria-hidden="true" tabindex="-1"></a>  log_operacja(<span class="st">&#39;USUWANIE_PRACOWNIKA&#39;</span>, i_id_pracownika, <span class="st">&#39;SUCCESS&#39;</span>);</span>
+<span id="cb19-60"><a href="#cb19-60" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-61"><a href="#cb19-61" aria-hidden="true" tabindex="-1"></a>  <span class="kw">COMMIT</span>;</span>
+<span id="cb19-62"><a href="#cb19-62" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-63"><a href="#cb19-63" aria-hidden="true" tabindex="-1"></a><span class="kw">EXCEPTION</span></span>
+<span id="cb19-64"><a href="#cb19-64" aria-hidden="true" tabindex="-1"></a>  <span class="cf">WHEN</span> OTHERS <span class="cf">THEN</span></span>
+<span id="cb19-65"><a href="#cb19-65" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- Logujemy błąd (log zostanie zachowany pomimo ROLLBACK)</span></span>
+<span id="cb19-66"><a href="#cb19-66" aria-hidden="true" tabindex="-1"></a>    log_operacja(<span class="st">&#39;USUWANIE_PRACOWNIKA&#39;</span>, i_id_pracownika, <span class="st">&#39;ERROR&#39;</span>, SQLERRM);</span>
+<span id="cb19-67"><a href="#cb19-67" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ROLLBACK</span>;</span>
+<span id="cb19-68"><a href="#cb19-68" aria-hidden="true" tabindex="-1"></a>    RAISE;</span>
+<span id="cb19-69"><a href="#cb19-69" aria-hidden="true" tabindex="-1"></a><span class="cf">END</span> usun_pracownika;</span>
+<span id="cb19-70"><a href="#cb19-70" aria-hidden="true" tabindex="-1"></a><span class="op">/</span></span></code></pre></div>
+<p><strong>Wyjaśnienie:</strong> Autonomous transactions wykonują się w
+oddzielnej, niezależnej transakcji. Są idealne do logowania i audytu,
+ponieważ logi pozostają w bazie nawet gdy główna transakcja zostanie
+wycofana. To pozwala śledzić nieudane próby operacji, co jest kluczowe
+dla debugowania i bezpieczeństwa. UWAGA: Każda autonomous transaction
+MUSI kończyć się COMMIT lub ROLLBACK.</p>
+<hr />
+<h2 id="podsumowanie">Podsumowanie</h2>
+<p>Przestrzeganie przedstawionych praktyk formatowania kodu PL/SQL
+przynosi następujące korzyści:</p>
+<ol type="1">
+<li><strong>Czytelność</strong> - Kod jest łatwiejszy do zrozumienia dla
+całego zespołu</li>
+<li><strong>Utrzymywalność</strong> - Modyfikacje i rozszerzenia są
+szybsze i bezpieczniejsze</li>
+<li><strong>Debugowanie</strong> - Błędy są łatwiejsze do zlokalizowania
+i naprawienia</li>
+<li><strong>Współpraca</strong> - Spójny styl ułatwia code review i
+pracę zespołową</li>
+<li><strong>Dokumentacja</strong> - Dobrze sformatowany kod z
+komentarzami jest samodokumentujący się</li>
+<li><strong>Wydajność</strong> - Stosowanie bulk operations i właściwego
+zarządzania transakcjami poprawia performance</li>
+</ol>
+<h3 id="zalecane-narzędzia">Zalecane narzędzia</h3>
+<p>Dla automatyzacji formatowania kodu PL/SQL zaleca się użycie:</p>
+<ul>
+<li><strong>Oracle SQL Developer</strong> - wbudowany formatter
+(Ctrl+F7)</li>
+<li><strong>PL/SQL Developer</strong> - narzędzie Beautifier</li>
+<li><strong>SQLcl</strong> - narzędzie command-line z formatowaniem</li>
+<li><strong>PLDoc</strong> - generator dokumentacji z kodu PL/SQL</li>
+</ul>
+<h3 id="dodatkowe-zasoby">Dodatkowe zasoby</h3>
+<ul>
+<li>Oracle Database PL/SQL Language Reference</li>
+<li>Oracle Database Development Guide</li>
+<li>“Oracle PL/SQL Best Practices” - Steven Feuerstein</li>
+<li>Oracle Live SQL - przykłady i tutoriale</li>
+</ul>
+<hr />
+<p><strong>Autor:</strong> GitHub Copilot<br />
+<strong>Data utworzenia:</strong> 7 listopada 2025<br />
+<strong>Ostatnia aktualizacja:</strong> 7 listopada 2025<br />
+<strong>Wersja dokumentu:</strong> 2.3</p>
+<h3 id="historia-zmian">Historia zmian:</h3>
+<ul>
+<li><strong>v1.0</strong> (2025-11-07): Wersja początkowa z podstawowymi
+regułami formatowania</li>
+<li><strong>v2.0</strong> (2025-11-07): Dodanie reguł nazewnictwa
+obiektów bazodanowych, uspójnienie sufiksów</li>
+<li><strong>v2.1</strong> (2025-11-07): Zmiana standardu wcięć z 4 na 2
+spacje, formatowanie INSERT-ów</li>
+<li><strong>v2.2</strong> (2025-11-07): Usunięcie wszystkich sekcji
+“NIEPOPRAWNIE” - pozostawienie tylko dobrych praktyk</li>
+<li><strong>v2.3</strong> (2025-11-07): Implementacja standardowych
+konwencji nazewniczych PL/SQL</li>
+</ul>
+</body>
+</html>
