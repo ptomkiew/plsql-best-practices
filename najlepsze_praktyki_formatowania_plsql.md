@@ -9,6 +9,8 @@
 6. [Obsługa wyjątków](#obsługa-wyjątków)
 7. [Komentarze i dokumentacja](#komentarze-i-dokumentacja)
 8. [Najlepsze praktyki](#najlepsze-praktyki)
+9. [Konfiguracja automatycznego formatowania w Oracle SQL Developer](#konfiguracja-automatycznego-formatowania-w-oracle-sql-developer)
+10. [Konfiguracja automatycznego formatowania w PL/SQL Developer](#konfiguracja-automatycznego-formatowania-w-plsql-developer)
 
 ---
 
@@ -46,74 +48,74 @@ CREATE TABLE pracownicy (
 
 | Typ obiektu | Konwencja nazewnicza | Przykład |
 |-------------|---------------------|----------|
-| **Tabela** | Nazwa w liczbie mnogiej (ostatni człon) | `POLICIES` |
-| | | `POLICY_ROLES` |
-| | | `POLICY_ROLE_TYPES` |
-| **Primary Key** | `<table>_PK` | `POLICIES_PK` |
-| **Foreign Key** | `<table>_<ref_table>_<optional_name>_FK` | `POLICIES_CUSTOMERS_FK` |
-| | ⚠️ **Zawsze tworzyć indeks na kolumnie FK!** | `CUSTOMERS_CUSTOMERS_FK` |
-| **Unique Key** | `<table>_<optional_name>_UK` | `POLICIES_UK` |
-| **Check Constraint** | `<table>_<optional_name>_CHK` | `POLICIES_STATUS_CHK` |
-| | | `POLICIES_FLAG_CHK` |
+| **Tabela** | Nazwa w liczbie mnogiej (ostatni człon) | `policies` |
+| | | `policy_roles` |
+| | | `policy_role_types` |
+| **Primary Key** | `<table>_pk` | `policies_pk` |
+| **Foreign Key** | `<table>_<ref_table>_<optional_name>_fk` | `policies_customers_fk` |
+| | ⚠️ **Zawsze tworzyć indeks na kolumnie FK!** | `customers_customers_fk` |
+| **Unique Key** | `<table>_<optional_name>_uk` | `policies_uk` |
+| **Check Constraint** | `<table>_<optional_name>_chk` | `policies_status_chk` |
+| | | `policies_flag_chk` |
 
 #### 1.2.2 Indeksy
 
 | Typ indeksu | Konwencja nazewnicza | Przykład |
 |------------|---------------------|----------|
-| **Indeks dla PK** | `<PK_name>_IDX` | `POLICIES_PK_IDX` |
-| **Indeks dla UK** | `<UK_name>_IDX` | `POLICIES_UK_IDX` |
-| **Indeks dla FK** | `<FK_name>_IDX` | `POLICIES_CUSTOMERS_FK_IDX` |
-| **Indeks pozostałe** | `<table>_<optional_name>_IDX` | `POLICIES_CUSTOMER_NAME_IDX` |
+| **Indeks dla PK** | `<pk_name>_idx` | `policies_pk_idx` |
+| **Indeks dla UK** | `<uk_name>_idx` | `policies_uk_idx` |
+| **Indeks dla FK** | `<fk_name>_idx` | `policies_customers_fk_idx` |
+| **Indeks pozostałe** | `<table>_<optional_name>_idx` | `policies_customer_name_idx` |
 
 #### 1.2.3 Triggery
 
 | Element | Opis | Przykład |
 |---------|------|----------|
-| **Konwencja** | `<table>_<BA_flag><IUD><RS_flag>_<HIST>_TRG` | |
-| **BA_flag** | B (before) lub A (after) | `POLICIES_BIUR_TRG` |
-| **IUD** | I (insert), U (update), D (delete) | `POLICIES_AIUDR_HIST_TRG` |
+| **Konwencja** | `<table>_<ba_flag><iud><rs_flag>_<hist>_trg` | |
+| **BA_flag** | B (before) lub A (after) | `policies_biur_trg` |
+| **IUD** | I (insert), U (update), D (delete) | `policies_aiudr_hist_trg` |
 | **RS_flag** | R (row) lub S (statement) | |
 | **HIST** | Opcjonalny element dla triggerów historycznych | |
 
 **Przykłady triggerów:**
-- `POLICIES_BIUR_TRG` - before insert/update row
-- `POLICIES_AIUDR_HIST_TRG` - after insert/update/delete row (historyzujący)
+- `policies_biur_trg` - before insert/update row
+- `policies_aiudr_hist_trg` - after insert/update/delete row (historyzujący)
 
 #### 1.2.4 Sekwencje
 
 | Typ obiektu | Konwencja nazewnicza | Przykład |
 |-------------|---------------------|----------|
-| **Sequence** | `<optional_table>_<optional_column>_<optional_name>_SEQ` | `POLICIES_ID_SEQ` |
+| **Sequence** | `<optional_table>_<optional_column>_<optional_name>_seq` | `policies_id_seq` |
 
 #### 1.2.5 Widoki i tabele specjalne
 
 | Typ obiektu | Konwencja nazewnicza | Przykład |
 |-------------|---------------------|----------|
-| **Widoki** | `<name>_V` | `ACTIVE_POLICIES_V` |
-| **Widoki zmaterializowane** | `<name>_MV` | `POLICY_SUMMARY_MV` |
-| **External Table** | `<name>_EXT` | `CUSTOMER_DATA_EXT` |
-| **Global Temporary Table** | `<name>_TMP` | `CALCULATION_RESULTS_TMP` |
+| **Widoki** | `<name>_v` | `active_policies_v` |
+| **Widoki zmaterializowane** | `<name>_mv` | `policy_summary_mv` |
+| **External Table** | `<name>_ext` | `customer_data_ext` |
+| **Global Temporary Table** | `<name>_tmp` | `calculation_results_tmp` |
 
 #### 1.2.6 Typy danych
 
 | Typ obiektu | Konwencja nazewnicza | Przykład |
 |-------------|---------------------|----------|
-| **Typy** | `<name>_T` | `EMPLOYEE_RECORD_T` |
-| **Typy - table of** | `<name>_TT` | `EMPLOYEE_LIST_TT` |
+| **Typy** | `<name>_t` | `employee_record_t` |
+| **Typy - table of** | `<name>_tt` | `employee_list_tt` |
 
 #### 1.2.7 Obiekty systemowe
 
 | Typ obiektu | Konwencja nazewnicza | Przykład |
 |-------------|---------------------|----------|
-| **Directory** | `<name>_DIR` | `DATA_EXPORT_DIR` |
+| **Directory** | `<name>_dir` | `data_export_dir` |
 
 #### 1.2.8 Obiekty PL/SQL
 
 | Typ obiektu | Konwencja nazewnicza | Przykład |
 |-------------|---------------------|----------|
-| **Pakiet PL/SQL (INSIS events)** | `<name>_SRV` | `POLICY_HANDLER_SRV` |
-| **Procedura PL/SQL** | `<name>_PRC` | `CALCULATE_PREMIUM_PRC` |
-| **Funkcja PL/SQL** | `<name>_FUN` | `GET_CUSTOMER_RATING_FUN` |
+| **Pakiet PL/SQL (INSIS events)** | `<name>_srv` | `policy_handler_srv` |
+| **Procedura PL/SQL** | `<name>_prc` | `calculate_premium_prc` |
+| **Funkcja PL/SQL** | `<name>_fun` | `get_customer_rating_fun` |
 
 **Przykład zastosowania:**
 ```sql
@@ -823,6 +825,7 @@ FROM
 WHERE 
   p.data_zatrudnienia >= ADD_MONTHS(SYSDATE, -12)
   AND d.aktywny = 'T';
+```
 
 **Wyjaśnienie:** Aliasy skracają zapytania i zwiększają czytelność, szczególnie przy wielu JOIN-ach. Używanie pełnych nazw tabel jest rozwlekłe i utrudnia szybkie skanowanie kodu. Dobrze dobrane aliasy (p dla pracownicy, d dla dzialy) są intuicyjne i łatwe do zapamiętania.
 
@@ -879,6 +882,7 @@ BEGIN
   DBMS_OUTPUT.PUT_LINE('Status: ' || l_wynik);
 END;
 /
+```
 
 **Wyjaśnienie:** Nazwane parametry zwiększają czytelność i bezpieczeństwo kodu. Są odporne na zmianę kolejności parametrów w definicji procedury. Przy wywołaniu natychmiast widać, co oznacza każda wartość, bez konieczności sprawdzania sygnatur procedur.
 
@@ -1223,6 +1227,1150 @@ END usun_pracownika;
 
 ---
 
+## Konfiguracja automatycznego formatowania w Oracle SQL Developer
+
+### 8.1 Wprowadzenie do formattera w SQL Developer
+
+Oracle SQL Developer posiada wbudowany, potężny system formatowania kodu PL/SQL, który można dostosować do przedstawionych w tym dokumencie standardów. Właściwa konfiguracja formattera pozwala na:
+
+- **Automatyczne formatowanie** całego kodu jednym skrótem klawiszowym (Ctrl+F7 / Cmd+F7)
+- **Spójność kodu** w całym zespole dzięki eksportowi/importowi ustawień
+- **Oszczędność czasu** - brak ręcznego wyrównywania i formatowania
+- **Egzekwowanie standardów** podczas code review
+
+### 8.2 Dostęp do ustawień formattera
+
+**Krok 1: Otwórz okno preferencji**
+
+1. Z menu wybierz: **Tools → Preferences** (lub **Oracle SQL Developer → Preferences** na macOS)
+2. Alternatywnie użyj skrótu: **Ctrl+Shift+P** (Windows/Linux) lub **Cmd+,** (macOS)
+
+**Krok 2: Nawiguj do ustawień formattera**
+
+W lewym panelu preferencji rozwiń drzewo:
+```
+Database → SQL Formatter
+```
+
+Zobaczysz następujące sekcje:
+- **Oracle Formatting** - główne ustawienia formatowania
+- **Custom Format** - możliwość utworzenia własnych profili
+- **Third Party Formatters** - integracja z zewnętrznymi narzędziami
+
+### 8.3 Konfiguracja podstawowych ustawień formatowania
+
+#### 8.3.1 Wcięcia (Indentation)
+
+**Lokalizacja:** `Preferences → Database → SQL Formatter → Oracle Formatting`
+
+**Sekcja: Indentation**
+
+| Ustawienie | Wartość | Opis |
+|------------|---------|------|
+| **Spaces Per Indent** | `2` | Liczba spacji na jeden poziom wcięcia |
+| **Use Tab Character** | `☐ unchecked` | NIE używaj tabulatorów - tylko spacje |
+| **Indent SELECT items** | `☑ checked` | Wcięcie dla kolumn w SELECT |
+| **Indent FROM items** | `☑ checked` | Wcięcie dla tabel w FROM |
+| **Indent WHERE conditions** | `☑ checked` | Wcięcie dla warunków WHERE |
+
+**Przykład wyniku:**
+```sql
+SELECT 
+  p.id_pracownika,
+  p.nazwisko,
+  d.nazwa
+FROM 
+  pracownicy p
+  INNER JOIN dzialy d 
+    ON p.id_dzialu = d.id_dzialu
+WHERE 
+  p.aktywny = 'T'
+  AND d.lokalizacja = 'Warszawa';
+```
+
+#### 8.3.2 Formatowanie klauzul SQL
+
+**Sekcja: Line Breaks**
+
+| Ustawienie | Wartość | Opis |
+|------------|---------|------|
+| **SELECT list items** | `One item per line` | Każda kolumna w osobnej linii |
+| **FROM clause** | `One item per line` | Każdy JOIN w osobnej linii |
+| **WHERE conditions** | `One item per line` | Każdy warunek w osobnej linii |
+| **After SELECT** | `New line` | SELECT w nowej linii |
+| **After FROM** | `New line` | FROM w nowej linii |
+| **After WHERE** | `New line` | WHERE w nowej linii |
+| **After AND/OR** | `Keep with condition` | AND/OR przy warunku |
+
+**Przykład wyniku:**
+```sql
+SELECT
+  z.id_zamowienia,
+  z.data_zamowienia,
+  k.nazwa AS klient,
+  z.wartosc_brutto
+FROM
+  zamowienia z
+  INNER JOIN klienci k 
+    ON z.id_klienta = k.id_klienta
+WHERE
+  z.status = 'AKTYWNE'
+  AND z.data_zamowienia >= TRUNC(SYSDATE)
+  AND k.vip = 'T';
+```
+
+#### 8.3.3 Wielkość liter (Case)
+
+**Sekcja: Case**
+
+| Element | Ustawienie | Przykład |
+|---------|-----------|----------|
+| **SQL Keywords** | `UPPER CASE` | `SELECT`, `FROM`, `WHERE` |
+| **PL/SQL Keywords** | `UPPER CASE` | `BEGIN`, `END`, `IF`, `THEN` |
+| **Identifiers** | `lower case` | `pracownicy`, `id_pracownika` |
+| **Data Types** | `UPPER CASE` | `NUMBER`, `VARCHAR2`, `DATE` |
+
+**Jak ustawić:**
+1. W sekcji **Case** znajdź dropdowny dla każdej kategorii
+2. Wybierz odpowiednią opcję z listy: `UPPER CASE`, `lower case`, `Title Case`, lub `Unchanged`
+
+**Przykład wyniku:**
+```sql
+CREATE OR REPLACE PROCEDURE oblicz_wynagrodzenie (
+  i_id_pracownika IN     NUMBER,
+  o_wynagrodzenie OUT    NUMBER
+) IS
+  l_podstawa NUMBER;
+  l_bonus    NUMBER;
+BEGIN
+  SELECT p.wynagrodzenie_podstawowe,
+         p.premia
+    INTO l_podstawa, l_bonus
+    FROM pracownicy p
+   WHERE p.id_pracownika = i_id_pracownika;
+  
+  o_wynagrodzenie := l_podstawa + l_bonus;
+END oblicz_wynagrodzenie;
+/
+```
+
+#### 8.3.4 Formatowanie INSERT
+
+**Sekcja: INSERT Statement**
+
+| Ustawienie | Wartość | Opis |
+|------------|---------|------|
+| **Column list** | `One item per line` | Każda kolumna w osobnej linii |
+| **Values list** | `One item per line` | Każda wartość w osobnej linii |
+| **Align column and value lists** | `☑ checked` | Wyrównanie kolumn i wartości |
+
+**Przykład wyniku:**
+```sql
+INSERT INTO pracownicy (
+  id_pracownika,
+  imie,
+  nazwisko,
+  email,
+  data_zatrudnienia
+) VALUES (
+  pracownicy_id_seq.NEXTVAL,
+  'Jan',
+  'Kowalski',
+  'jan.kowalski@firma.pl',
+  SYSDATE
+);
+```
+
+#### 8.3.5 Formatowanie bloków PL/SQL
+
+**Sekcja: PL/SQL Blocks**
+
+| Ustawienie | Wartość | Opis |
+|------------|---------|------|
+| **BEGIN on new line** | `☑ checked` | BEGIN w nowej linii |
+| **END on new line** | `☑ checked` | END w nowej linii |
+| **Indent declarations** | `☑ checked` | Wcięcie dla deklaracji zmiennych |
+| **Align variable declarations** | `☑ checked` | Wyrównanie deklaracji |
+| **Align assignments** | `☑ checked` | Wyrównanie przypisań |
+
+**Przykład wyniku:**
+```sql
+CREATE OR REPLACE PROCEDURE test_formatowania IS
+  l_zmienna1  NUMBER := 100;
+  l_zmienna2  VARCHAR2(50) := 'tekst';
+  l_zmienna3  DATE := SYSDATE;
+BEGIN
+  IF l_zmienna1 > 0 THEN
+    DBMS_OUTPUT.PUT_LINE('Wartość: ' || l_zmienna1);
+  END IF;
+END test_formatowania;
+/
+```
+
+### 8.4 Tworzenie własnego profilu formatowania
+
+Aby zachować niestandardowe ustawienia i móc je udostępnić zespołowi:
+
+**Krok 1: Stwórz nowy profil**
+
+1. W oknie `Preferences → Database → SQL Formatter`
+2. Kliknij przycisk **Create Profile** (ikona "+" lub "New")
+3. Nadaj nazwę profilowi, np. "Firma - PL/SQL Standard v2.3"
+4. Kliknij **OK**
+
+**Krok 2: Dostosuj ustawienia**
+
+Skonfiguruj wszystkie opcje zgodnie z tabelami powyżej (punkty 8.3.1 - 8.3.5).
+
+**Krok 3: Testuj formatowanie**
+
+1. Otwórz przykładowy plik SQL z nieformatowanym kodem
+2. Zaznacz cały kod (Ctrl+A / Cmd+A)
+3. Naciśnij **Ctrl+F7** (Windows/Linux) lub **Cmd+F7** (macOS)
+4. Sprawdź rezultat i dostosuj ustawienia w razie potrzeby
+
+**Krok 4: Eksportuj profil**
+
+1. W `Preferences → Database → SQL Formatter`
+2. Wybierz swój profil z listy
+3. Kliknij **Export** (ikona eksportu)
+4. Zapisz plik XML, np. `sql_developer_formatter_standard.xml`
+5. Udostępnij plik zespołowi (przez Git, Confluence, itp.)
+
+**Krok 5: Import profilu (dla innych członków zespołu)**
+
+1. Pobierz plik XML z profilem
+2. W SQL Developer: `Preferences → Database → SQL Formatter`
+3. Kliknij **Import** (ikona importu)
+4. Wybierz pobrany plik XML
+5. Profil zostanie dodany do listy dostępnych profili
+6. Ustaw go jako domyślny: zaznacz i kliknij **Set as Default**
+
+### 8.5 Konfiguracja zaawansowana
+
+#### 8.5.1 Białe znaki i puste linie
+
+**Sekcja: White Space**
+
+| Ustawienie | Wartość | Opis |
+|------------|---------|------|
+| **Blank lines before END** | `0` | Brak pustych linii przed END |
+| **Blank lines after BEGIN** | `0` | Brak pustych linii po BEGIN |
+| **Blank lines between sections** | `1` | Jedna pusta linia między sekcjami |
+| **Remove trailing spaces** | `☑ checked` | Usuń spacje na końcu linii |
+
+#### 8.5.2 Długie linie
+
+**Sekcja: Line Wrapping**
+
+| Ustawienie | Wartość | Opis |
+|------------|---------|------|
+| **Maximum line width** | `100` | Maksymalna długość linii (znaki) |
+| **Wrap long lines** | `☑ checked` | Automatyczne łamanie długich linii |
+| **Wrap SELECT list** | `☑ checked` | Łam długą listę SELECT |
+| **Wrap WHERE conditions** | `☑ checked` | Łam długie warunki WHERE |
+
+**Przykład wyniku dla długiego SELECT:**
+```sql
+SELECT 
+  p.id_pracownika,
+  p.imie,
+  p.nazwisko,
+  p.email,
+  p.telefon,
+  d.nazwa AS nazwa_dzialu,
+  d.lokalizacja,
+  s.stanowisko,
+  s.wynagrodzenie,
+  s.zakres_odpowiedzialnosci
+FROM 
+  pracownicy p
+  INNER JOIN dzialy d 
+    ON p.id_dzialu = d.id_dzialu
+  LEFT JOIN stanowiska s 
+    ON p.id_stanowiska = s.id_stanowiska;
+```
+
+#### 8.5.3 Komentarze
+
+**Sekcja: Comments**
+
+| Ustawienie | Wartość | Opis |
+|------------|---------|------|
+| **Preserve formatting in comments** | `☑ checked` | Zachowaj formatowanie w komentarzach |
+| **Align single-line comments** | `☐ unchecked` | Nie wyrównuj komentarzy jednoliniowych |
+| **Keep comments on same line as code** | `☑ checked` | Zachowaj komentarze przy kodzie |
+
+**Przykład:**
+```sql
+BEGIN
+  -- To jest komentarz przed blokiem IF
+  IF l_wartosc > 0 THEN
+    l_wynik := l_wartosc * 2; -- Komentarz przy kodzie
+  END IF;
+  
+  /*
+   * To jest komentarz
+   * wieloliniowy
+   */
+  RETURN l_wynik;
+END;
+```
+
+### 8.6 Skróty klawiszowe i automatyzacja
+
+#### 8.6.1 Podstawowe skróty
+
+| Akcja | Windows/Linux | macOS | Opis |
+|-------|---------------|-------|------|
+| **Format** | `Ctrl+F7` | `Cmd+F7` | Formatuj zaznaczony kod lub cały plik |
+| **Format All** | `Ctrl+Shift+F7` | `Cmd+Shift+F7` | Formatuj wszystkie otwarte pliki |
+| **Preferences** | `Ctrl+Shift+P` | `Cmd+,` | Otwórz okno preferencji |
+
+#### 8.6.2 Formatowanie przed zapisem
+
+Aby automatycznie formatować kod przy każdym zapisie:
+
+1. `Preferences → Database → Worksheet`
+2. Znajdź opcję **Format on Save**
+3. Zaznacz `☑ Format SQL and PL/SQL on save`
+
+**UWAGA:** Ta opcja może spowalniać pracę przy bardzo dużych plikach!
+
+#### 8.6.3 Formatowanie wielu plików
+
+Aby sformatować wiele plików jednocześnie:
+
+1. W panelu **Files** lub **Connections** zaznacz wiele plików SQL
+2. Kliknij prawym przyciskiem myszy
+3. Wybierz **Format** z menu kontekstowego
+4. Wszystkie pliki zostaną sformatowane zgodnie z aktywnym profilem
+
+### 8.7 Najczęstsze problemy i rozwiązania
+
+#### Problem 1: Formatter nie działa
+
+**Objawy:** Skrót Ctrl+F7 nie formatuje kodu
+
+**Rozwiązania:**
+1. Sprawdź, czy kod jest zaznaczony (jeśli nie - zaznacz wszystko: Ctrl+A)
+2. Upewnij się, że edytor rozpoznaje plik jako SQL/PLSQL (sprawdź w dolnym pasku)
+3. Sprawdź, czy formatter jest włączony: `Preferences → Database → SQL Formatter → Enable SQL Formatter`
+
+#### Problem 2: Nieprawidłowe wcięcia
+
+**Objawy:** Wcięcia są zbyt duże lub wykorzystują tabulatory
+
+**Rozwiązanie:**
+1. `Preferences → Database → SQL Formatter → Oracle Formatting`
+2. Sekcja **Indentation**:
+   - Ustaw **Spaces Per Indent** na `2`
+   - Odznacz **Use Tab Character**
+3. Zapisz i przeformatuj kod ponownie (Ctrl+F7)
+
+#### Problem 3: Formatter zmienia wielkość liter w niechciany sposób
+
+**Objawy:** Nazwy tabel/kolumn są zamieniane na wielkie litery
+
+**Rozwiązanie:**
+1. `Preferences → Database → SQL Formatter → Oracle Formatting`
+2. Sekcja **Case** → **Identifiers**
+3. Ustaw na `lower case` lub `Unchanged`
+4. Przeformatuj kod ponownie
+
+#### Problem 4: Długie linie nie są łamane
+
+**Objawy:** Zapytania SQL wychodzą poza ekran
+
+**Rozwiązanie:**
+1. `Preferences → Database → SQL Formatter → Oracle Formatting`
+2. Sekcja **Line Wrapping**:
+   - Zaznacz **Wrap long lines**
+   - Ustaw **Maximum line width** na `100`
+   - Zaznacz **Wrap SELECT list** i **Wrap WHERE conditions**
+
+#### Problem 5: Komentarze są przesuwane
+
+**Objawy:** Komentarze lądują w nieoczekiwanych miejscach
+
+**Rozwiązanie:**
+1. `Preferences → Database → SQL Formatter → Oracle Formatting`
+2. Sekcja **Comments**:
+   - Zaznacz **Preserve formatting in comments**
+   - Zaznacz **Keep comments on same line as code**
+
+### 8.8 Przykładowy plik konfiguracyjny XML
+
+Poniżej znajduje się przykładowy fragment pliku XML z profilem formatowania zgodnym z tym dokumentem. Możesz go zapisać i zaimportować do SQL Developer:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlDeveloperSettings>
+  <profile name="PL/SQL Best Practices v2.3">
+    <indentation>
+      <spacesPerIndent>2</spacesPerIndent>
+      <useTabCharacter>false</useTabCharacter>
+      <indentSelectItems>true</indentSelectItems>
+      <indentFromItems>true</indentFromItems>
+      <indentWhereConditions>true</indentWhereConditions>
+    </indentation>
+    
+    <lineBreaks>
+      <selectListItems>onePerLine</selectListItems>
+      <fromClause>onePerLine</fromClause>
+      <whereConditions>onePerLine</whereConditions>
+      <afterSelect>newLine</afterSelect>
+      <afterFrom>newLine</afterFrom>
+      <afterWhere>newLine</afterWhere>
+    </lineBreaks>
+    
+    <case>
+      <sqlKeywords>upperCase</sqlKeywords>
+      <plsqlKeywords>upperCase</plsqlKeywords>
+      <identifiers>lowerCase</identifiers>
+      <dataTypes>upperCase</dataTypes>
+    </case>
+    
+    <insertStatement>
+      <columnList>onePerLine</columnList>
+      <valuesList>onePerLine</valuesList>
+      <alignLists>true</alignLists>
+    </insertStatement>
+    
+    <plsqlBlocks>
+      <beginOnNewLine>true</beginOnNewLine>
+      <endOnNewLine>true</endOnNewLine>
+      <indentDeclarations>true</indentDeclarations>
+      <alignDeclarations>true</alignDeclarations>
+      <alignAssignments>true</alignAssignments>
+    </plsqlBlocks>
+    
+    <whiteSpace>
+      <blankLinesBeforeEnd>0</blankLinesBeforeEnd>
+      <blankLinesAfterBegin>0</blankLinesAfterBegin>
+      <blankLinesBetweenSections>1</blankLinesBetweenSections>
+      <removeTrailingSpaces>true</removeTrailingSpaces>
+    </whiteSpace>
+    
+    <lineWrapping>
+      <maximumLineWidth>100</maximumLineWidth>
+      <wrapLongLines>true</wrapLongLines>
+      <wrapSelectList>true</wrapSelectList>
+      <wrapWhereConditions>true</wrapWhereConditions>
+    </lineWrapping>
+    
+    <comments>
+      <preserveFormattingInComments>true</preserveFormattingInComments>
+      <alignSingleLineComments>false</alignSingleLineComments>
+      <keepCommentsOnSameLineAsCode>true</keepCommentsOnSameLineAsCode>
+    </comments>
+  </profile>
+</sqlDeveloperSettings>
+```
+
+**Jak użyć tego pliku:**
+
+1. Skopiuj powyższą zawartość do pliku tekstowego
+2. Zapisz jako `plsql_formatter_config.xml`
+3. W SQL Developer: `Preferences → Database → SQL Formatter`
+4. Kliknij **Import**
+5. Wybierz zapisany plik XML
+6. Profil "PL/SQL Best Practices v2.3" zostanie dodany do listy
+7. Ustaw go jako domyślny
+
+### 8.9 Integracja z kontrolą wersji (Git)
+
+Aby zapewnić spójne formatowanie w całym zespole:
+
+**Krok 1: Dodaj plik konfiguracyjny do repozytorium**
+
+```bash
+# Utwórz folder dla konfiguracji
+mkdir -p .sqldeveloper
+
+# Skopiuj wyeksportowany profil
+cp ~/path/to/plsql_formatter_config.xml .sqldeveloper/
+
+# Dodaj do Git
+git add .sqldeveloper/plsql_formatter_config.xml
+git commit -m "Add SQL Developer formatter configuration"
+git push
+```
+
+**Krok 2: Dodaj instrukcje do README projektu**
+
+```markdown
+## Konfiguracja SQL Developer
+
+1. Pobierz najnowszą wersję z repozytorium
+2. Otwórz SQL Developer
+3. Przejdź do Tools → Preferences → Database → SQL Formatter
+4. Kliknij Import i wybierz plik `.sqldeveloper/plsql_formatter_config.xml`
+5. Ustaw profil "PL/SQL Best Practices v2.3" jako domyślny
+6. Przed każdym commit'em formatuj kod: Ctrl+F7
+```
+
+**Krok 3: Git pre-commit hook (opcjonalnie)**
+
+Możesz utworzyć Git hook, który sprawdza formatowanie przed commit'em:
+
+```bash
+#!/bin/bash
+# .git/hooks/pre-commit
+
+# Sprawdź, czy są pliki SQL do sformatowania
+sql_files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(sql|prc|fnc|pks|pkb)$')
+
+if [ -n "$sql_files" ]; then
+  echo "🔍 Sprawdzanie formatowania plików SQL..."
+  
+  # Tutaj możesz dodać skrypt sprawdzający formatowanie
+  # Np. wywołanie zewnętrznego narzędzia formatującego
+  
+  echo "✅ Formatowanie OK"
+fi
+
+exit 0
+```
+
+### 8.10 Przykłady przed i po formatowaniu
+
+#### Przykład 1: Zapytanie SELECT
+
+**Przed formatowaniem:**
+```sql
+select p.id_pracownika,p.imie,p.nazwisko,d.nazwa as nazwa_dzialu from pracownicy p inner join dzialy d on p.id_dzialu=d.id_dzialu where p.aktywny='T' and d.lokalizacja in ('Warszawa','Kraków') order by p.nazwisko;
+```
+
+**Po formatowaniu (Ctrl+F7):**
+```sql
+SELECT 
+  p.id_pracownika,
+  p.imie,
+  p.nazwisko,
+  d.nazwa AS nazwa_dzialu
+FROM 
+  pracownicy p
+  INNER JOIN dzialy d 
+    ON p.id_dzialu = d.id_dzialu
+WHERE 
+  p.aktywny = 'T'
+  AND d.lokalizacja IN ('Warszawa', 'Kraków')
+ORDER BY 
+  p.nazwisko;
+```
+
+#### Przykład 2: Procedura PL/SQL
+
+**Przed formatowaniem:**
+```sql
+create or replace procedure oblicz_wynagrodzenie(i_id_pracownika in number,o_wynagrodzenie out number)is l_podstawa number;l_bonus number;begin select p.wynagrodzenie_podstawowe,p.premia into l_podstawa,l_bonus from pracownicy p where p.id_pracownika=i_id_pracownika;o_wynagrodzenie:=l_podstawa+l_bonus;exception when no_data_found then raise_application_error(-20001,'Pracownik nie istnieje');end oblicz_wynagrodzenie;
+```
+
+**Po formatowaniu (Ctrl+F7):**
+```sql
+CREATE OR REPLACE PROCEDURE oblicz_wynagrodzenie (
+  i_id_pracownika IN     NUMBER,
+  o_wynagrodzenie OUT    NUMBER
+) IS
+  l_podstawa  NUMBER;
+  l_bonus     NUMBER;
+BEGIN
+  SELECT p.wynagrodzenie_podstawowe,
+         p.premia
+    INTO l_podstawa, l_bonus
+    FROM pracownicy p
+   WHERE p.id_pracownika = i_id_pracownika;
+  
+  o_wynagrodzenie := l_podstawa + l_bonus;
+  
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    RAISE_APPLICATION_ERROR(-20001, 'Pracownik nie istnieje');
+END oblicz_wynagrodzenie;
+/
+```
+
+### 8.11 Dodatkowe wskazówki
+
+1. **Formatuj regularnie** - nie czekaj do końca pracy nad plikiem. Formatuj po każdej większej zmianie.
+
+2. **Code review** - podczas review sprawdź, czy kod został sformatowany. Nieformatowany kod może być odrzucony.
+
+3. **Przed commit'em** - zawsze sformatuj (Ctrl+F7) przed dodaniem do Git. To zapobiega konfliktom merge związanym z formatowaniem.
+
+4. **Dokumentuj odstępstwa** - jeśli musisz świadomie odstąpić od standardu formatowania (np. w tabelach ASCII art w komentarzach), dodaj komentarz wyjaśniający.
+
+5. **Aktualizuj profil** - gdy standardy się zmienią, wyeksportuj nową wersję profilu i zaktualizuj w repozytorium.
+
+6. **Szkolenia** - upewnij się, że nowi członkowie zespołu wiedzą, jak skonfigurować formatter.
+
+---
+
+## Konfiguracja automatycznego formatowania w PL/SQL Developer
+
+### 9.1 Wprowadzenie do Beautifier w PL/SQL Developer
+
+PL/SQL Developer od firmy Allround Automations posiada narzędzie **Beautifier**, które pozwala na zaawansowane formatowanie kodu PL/SQL. Jest to komercyjne narzędzie, ale oferuje bardzo precyzyjną kontrolę nad formatowaniem.
+
+**Główne zalety:**
+- **Szczegółowa konfiguracja** - ponad 100 opcji formatowania
+- **Profile formatowania** - możliwość tworzenia wielu profili dla różnych projektów
+- **Integracja z IDE** - formatowanie bezpośrednio w edytorze
+- **Eksport/Import** - łatwe udostępnianie ustawień w zespole
+- **Wsparcie dla starszych wersji Oracle** - działa nawet z Oracle 8i
+
+### 9.2 Dostęp do ustawień Beautifier
+
+**Krok 1: Otwórz okno Preferences**
+
+1. Z menu wybierz: **Tools → Preferences** lub naciśnij **Configure → Preferences**
+2. Alternatywnie użyj skrótu: **Ctrl+Shift+C** (Configure button)
+
+**Krok 2: Nawiguj do ustawień Beautifier**
+
+W lewym panelu preferencji wybierz:
+```
+User Interface → Editor → Beautifier
+```
+
+Zobaczysz zakładki:
+- **General** - ogólne ustawienia
+- **Indentation** - wcięcia
+- **Capitalization** - wielkość liter
+- **Line Breaks** - łamanie linii
+- **White Space** - białe znaki
+- **Comments** - komentarze
+
+### 9.3 Konfiguracja podstawowych ustawień formatowania
+
+#### 9.3.1 Ustawienia ogólne (General)
+
+**Lokalizacja:** `Preferences → User Interface → Editor → Beautifier → General`
+
+| Ustawienie | Wartość | Opis |
+|------------|---------|------|
+| **Use beautifier on file open** | `☐ unchecked` | Nie formatuj automatycznie przy otwarciu |
+| **Use beautifier after auto-replace** | `☑ checked` | Formatuj po auto-replace |
+| **Use beautifier on save** | `☐ unchecked` | Nie formatuj automatycznie przy zapisie (opcjonalne) |
+| **Beautify selection only** | `☑ checked` | Formatuj tylko zaznaczony fragment |
+
+#### 9.3.2 Wcięcia (Indentation)
+
+**Lokalizacja:** `Preferences → User Interface → Editor → Beautifier → Indentation`
+
+| Ustawienie | Wartość | Opis |
+|------------|---------|------|
+| **Indent** | `2` | Liczba spacji na wcięcie |
+| **Use tabs** | `☐ unchecked` | NIE używaj tabulatorów |
+| **Indent SELECT items** | `☑ checked` | Wcięcie dla kolumn SELECT |
+| **Indent FROM items** | `☑ checked` | Wcięcie dla tabel FROM |
+| **Indent WHERE conditions** | `☑ checked` | Wcięcie dla warunków WHERE |
+| **Indent JOIN conditions** | `☑ checked` | Wcięcie dla JOIN |
+| **Indent WHEN conditions** | `☑ checked` | Wcięcie dla CASE WHEN |
+| **Indent declarations** | `☑ checked` | Wcięcie dla deklaracji zmiennych |
+
+**Przykład wyniku:**
+```sql
+SELECT 
+  p.id_pracownika,
+  p.imie,
+  p.nazwisko,
+  d.nazwa AS nazwa_dzialu
+FROM 
+  pracownicy p
+  INNER JOIN dzialy d 
+    ON p.id_dzialu = d.id_dzialu
+WHERE 
+  p.aktywny = 'T'
+  AND d.lokalizacja = 'Warszawa';
+```
+
+#### 9.3.3 Wielkość liter (Capitalization)
+
+**Lokalizacja:** `Preferences → User Interface → Editor → Beautifier → Capitalization`
+
+| Element | Ustawienie | Przykład |
+|---------|-----------|----------|
+| **SQL Keywords** | `UPPERCASE` | `SELECT`, `FROM`, `WHERE` |
+| **PL/SQL Keywords** | `UPPERCASE` | `BEGIN`, `END`, `IF`, `THEN` |
+| **Data Types** | `UPPERCASE` | `NUMBER`, `VARCHAR2`, `DATE` |
+| **Identifiers** | `lowercase` lub `Do not change` | `pracownicy`, `id_pracownika` |
+| **Functions** | `Do not change` | Zachowaj oryginalną wielkość |
+
+**Jak ustawić:**
+W każdej sekcji wybierz odpowiednią opcję z dropdownu:
+- `UPPERCASE`
+- `lowercase`
+- `Capitalize`
+- `Do not change`
+
+**Przykład wyniku:**
+```sql
+CREATE OR REPLACE PROCEDURE oblicz_wynagrodzenie (
+  i_id_pracownika IN     NUMBER,
+  o_wynagrodzenie OUT    NUMBER
+) IS
+  l_podstawa  NUMBER;
+  l_bonus     NUMBER;
+BEGIN
+  SELECT p.wynagrodzenie_podstawowe,
+         p.premia
+    INTO l_podstawa, l_bonus
+    FROM pracownicy p
+   WHERE p.id_pracownika = i_id_pracownika;
+  
+  o_wynagrodzenie := l_podstawa + l_bonus;
+END oblicz_wynagrodzenie;
+/
+```
+
+#### 9.3.4 Łamanie linii (Line Breaks)
+
+**Lokalizacja:** `Preferences → User Interface → Editor → Beautifier → Line Breaks`
+
+| Ustawienie | Wartość | Opis |
+|------------|---------|------|
+| **SELECT list** | `Line break after each item` | Każda kolumna w nowej linii |
+| **FROM clause** | `Line break after each item` | Każdy JOIN w nowej linii |
+| **WHERE clause** | `Line break after each condition` | Każdy warunek w nowej linii |
+| **AND/OR** | `Before` | AND/OR przed warunkiem |
+| **Comma in lists** | `After` | Przecinek po elemencie |
+| **Maximum line length** | `100` | Maksymalna długość linii |
+
+**Przykład wyniku:**
+```sql
+SELECT 
+  z.id_zamowienia,
+  z.data_zamowienia,
+  k.nazwa AS klient,
+  z.wartosc_brutto
+FROM 
+  zamowienia z
+  INNER JOIN klienci k 
+    ON z.id_klienta = k.id_klienta
+WHERE 
+  z.status = 'AKTYWNE'
+  AND z.data_zamowienia >= TRUNC(SYSDATE)
+  AND k.vip = 'T';
+```
+
+#### 9.3.5 Białe znaki (White Space)
+
+**Lokalizacja:** `Preferences → User Interface → Editor → Beautifier → White Space`
+
+| Ustawienie | Wartość | Opis |
+|------------|---------|------|
+| **Before operators** | `1` | Jedna spacja przed operatorem |
+| **After operators** | `1` | Jedna spacja po operatorze |
+| **Before comma** | `0` | Brak spacji przed przecinkiem |
+| **After comma** | `1` | Jedna spacja po przecinku |
+| **Around parentheses** | `0` | Brak spacji wewnątrz nawiasów |
+| **Remove trailing spaces** | `☑ checked` | Usuń spacje na końcu linii |
+| **Remove empty lines** | `☐ unchecked` | Zachowaj puste linie |
+
+#### 9.3.6 Komentarze (Comments)
+
+**Lokalizacja:** `Preferences → User Interface → Editor → Beautifier → Comments`
+
+| Ustawienie | Wartość | Opis |
+|------------|---------|------|
+| **Align single line comments** | `☐ unchecked` | Nie wyrównuj komentarzy jednoliniowych |
+| **Keep comments on same line** | `☑ checked` | Zachowaj komentarze przy kodzie |
+| **Indent multi-line comments** | `☑ checked` | Wcięcie dla komentarzy wieloliniowych |
+
+### 9.4 Tworzenie własnego profilu formatowania
+
+PL/SQL Developer pozwala na tworzenie wielu profili formatowania.
+
+**Krok 1: Stwórz nowy profil**
+
+1. W oknie `Preferences → User Interface → Editor → Beautifier`
+2. U góry okna znajdź dropdown **Profile**
+3. Kliknij przycisk **New** (lub ikonę "+")
+4. Nadaj nazwę profilowi, np. "Firma PL/SQL Standard v3.0"
+5. Kliknij **OK**
+
+**Krok 2: Dostosuj ustawienia**
+
+Skonfiguruj wszystkie zakładki (General, Indentation, Capitalization, Line Breaks, White Space, Comments) zgodnie z punktami 9.3.1 - 9.3.6.
+
+**Krok 3: Testuj formatowanie**
+
+1. Otwórz przykładowy plik SQL/PL/SQL
+2. Zaznacz fragment kodu lub cały kod (Ctrl+A)
+3. Naciśnij **F8** (lub wybierz **Edit → Beautify**)
+4. Sprawdź rezultat i dostosuj ustawienia w razie potrzeby
+
+**Krok 4: Ustaw jako domyślny**
+
+1. W dropdownie **Profile** wybierz swój profil
+2. Zaznacz **Set as default**
+3. Kliknij **Apply** i **OK**
+
+**Krok 5: Eksportuj profil**
+
+1. W oknie Beautifier Preferences kliknij przycisk **Export**
+2. Zapisz plik, np. `plsql_beautifier_config.ini`
+3. Udostępnij plik zespołowi (przez Git, Confluence, itp.)
+
+**Krok 6: Import profilu (dla innych członków zespołu)**
+
+1. Pobierz plik `.ini` z profilem
+2. W PL/SQL Developer: `Preferences → User Interface → Editor → Beautifier`
+3. Kliknij przycisk **Import**
+4. Wybierz pobrany plik `.ini`
+5. Profil zostanie dodany do listy
+6. Wybierz profil z dropdown i kliknij **Set as default**
+
+### 9.5 Konfiguracja zaawansowana
+
+#### 9.5.1 Formatowanie bloków PL/SQL
+
+**Lokalizacja:** `Preferences → User Interface → Editor → Beautifier → Line Breaks`
+
+**Sekcja: PL/SQL Blocks**
+
+| Ustawienie | Wartość | Opis |
+|------------|---------|------|
+| **BEGIN on new line** | `☑ checked` | BEGIN w nowej linii |
+| **END on new line** | `☑ checked` | END w nowej linii |
+| **THEN on new line** | `☐ unchecked` | THEN w tej samej linii co IF |
+| **LOOP on new line** | `☑ checked` | LOOP w nowej linii |
+| **DECLARE on new line** | `☑ checked` | DECLARE w nowej linii |
+
+**Przykład:**
+```sql
+CREATE OR REPLACE PROCEDURE test_proc IS
+  l_counter  NUMBER := 0;
+BEGIN
+  IF l_counter = 0 THEN
+    DBMS_OUTPUT.PUT_LINE('Zero');
+  END IF;
+  
+  FOR i IN 1..10 LOOP
+    l_counter := l_counter + i;
+  END LOOP;
+END test_proc;
+/
+```
+
+#### 9.5.2 Formatowanie INSERT/UPDATE
+
+**Lokalizacja:** `Preferences → User Interface → Editor → Beautifier → Line Breaks`
+
+| Ustawienie | Wartość | Opis |
+|------------|---------|------|
+| **INSERT column list** | `Line break after each item` | Każda kolumna w nowej linii |
+| **INSERT values list** | `Line break after each item` | Każda wartość w nowej linii |
+| **UPDATE SET clause** | `Line break after each item` | Każde przypisanie w nowej linii |
+| **Align column/value lists** | `☑ checked` | Wyrównaj kolumny i wartości |
+
+**Przykład:**
+```sql
+INSERT INTO pracownicy (
+  id_pracownika,
+  imie,
+  nazwisko,
+  email,
+  data_zatrudnienia
+) VALUES (
+  pracownicy_id_seq.NEXTVAL,
+  'Jan',
+  'Kowalski',
+  'jan.kowalski@firma.pl',
+  SYSDATE
+);
+
+UPDATE pracownicy p
+   SET p.wynagrodzenie = p.wynagrodzenie * 1.1,
+       p.data_ostatniej_podwyzki = SYSDATE,
+       p.zaktualizowal = USER
+ WHERE p.id_dzialu = 10
+   AND p.ocena_roczna >= 4;
+```
+
+#### 9.5.3 Formatowanie CASE
+
+**Lokalizacja:** `Preferences → User Interface → Editor → Beautifier → Indentation`
+
+| Ustawienie | Wartość | Opis |
+|------------|---------|------|
+| **Indent WHEN** | `☑ checked` | Wcięcie dla WHEN |
+| **Indent THEN** | `☑ checked` | Wcięcie dla THEN (jeśli w nowej linii) |
+| **Align WHEN conditions** | `☑ checked` | Wyrównaj warunki WHEN |
+
+**Przykład:**
+```sql
+SELECT 
+  p.id_pracownika,
+  p.nazwisko,
+  CASE 
+    WHEN p.wynagrodzenie < 3000 THEN 'Niskie'
+    WHEN p.wynagrodzenie BETWEEN 3000 AND 6000 THEN 'Średnie'
+    WHEN p.wynagrodzenie > 6000 THEN 'Wysokie'
+    ELSE 'Nieznane'
+  END AS poziom_wynagrodzenia
+FROM pracownicy p;
+```
+
+### 9.6 Skróty klawiszowe i automatyzacja
+
+#### 9.6.1 Podstawowe skróty
+
+| Akcja | Skrót | Opis |
+|-------|-------|------|
+| **Beautify** | `F8` | Formatuj zaznaczony kod lub cały plik |
+| **Beautify Selection** | `Shift+F8` | Formatuj tylko zaznaczenie |
+| **Preferences** | `Ctrl+Shift+C` | Otwórz okno konfiguracji |
+
+**Zmiana skrótu:**
+1. `Tools → Preferences → User Interface → Key Configuration`
+2. Znajdź akcję "Beautifier"
+3. Ustaw własny skrót klawiszowy
+4. Kliknij **OK**
+
+#### 9.6.2 Formatowanie przy zapisie
+
+Aby automatycznie formatować kod przy każdym zapisie:
+
+1. `Preferences → User Interface → Editor → Beautifier → General`
+2. Zaznacz `☑ Use beautifier on save`
+
+**UWAGA:** Ta opcja może spowalniać pracę przy bardzo dużych plikach!
+
+#### 9.6.3 Formatowanie wielu plików
+
+PL/SQL Developer nie ma wbudowanej funkcji formatowania wielu plików jednocześnie, ale można to zrobić poprzez:
+
+**Opcja 1: Makro**
+```sql
+-- Utwórz makro w Tools → Macros
+-- Makro: FormatAllFiles
+BEGIN
+  -- Otwórz plik
+  -- F8 (Beautify)
+  -- Zapisz plik
+  -- Zamknij plik
+  -- Następny plik
+END;
+```
+
+**Opcja 2: Command Window**
+1. `File → New → Command Window`
+2. Wpisz polecenia formatujące
+3. Wykonaj wsadowo
+
+### 9.7 Najczęstsze problemy i rozwiązania
+
+#### Problem 1: Beautifier nie działa
+
+**Objawy:** Skrót F8 nie formatuje kodu
+
+**Rozwiązania:**
+1. Sprawdź, czy kod jest poprawny składniowo (Beautifier wymaga poprawnego SQL/PL/SQL)
+2. Upewnij się, że edytor rozpoznaje typ pliku (sprawdź w `Window → Window List`)
+3. Sprawdź, czy Beautifier jest włączony w Preferences
+4. Zrestartuj PL/SQL Developer
+
+#### Problem 2: Nieprawidłowe wcięcia
+
+**Objawy:** Wcięcia są zbyt duże lub wykorzystują tabulatory
+
+**Rozwiązanie:**
+1. `Preferences → User Interface → Editor → Beautifier → Indentation`
+2. Ustaw **Indent** na `2`
+3. Odznacz **Use tabs**
+4. Kliknij **Apply** i przeformatuj kod (F8)
+
+#### Problem 3: Beautifier zmienia wielkość liter w niechciany sposób
+
+**Objawy:** Nazwy tabel/kolumn są zamieniane na wielkie litery
+
+**Rozwiązanie:**
+1. `Preferences → User Interface → Editor → Beautifier → Capitalization`
+2. Sekcja **Identifiers** → ustaw na `lowercase` lub `Do not change`
+3. Kliknij **Apply** i przeformatuj kod (F8)
+
+#### Problem 4: Komentarze są przesuwane
+
+**Objawy:** Komentarze lądują w nieoczekiwanych miejscach
+
+**Rozwiązanie:**
+1. `Preferences → User Interface → Editor → Beautifier → Comments`
+2. Zaznacz **Keep comments on same line**
+3. Odznacz **Align single line comments**
+4. Kliknij **Apply**
+
+#### Problem 5: Beautifier formatuje tylko część kodu
+
+**Objawy:** Formatuje się tylko zaznaczony fragment
+
+**Rozwiązanie:**
+1. `Preferences → User Interface → Editor → Beautifier → General`
+2. Odznacz **Beautify selection only** (jeśli chcesz formatować cały plik)
+3. Lub użyj **Ctrl+A** przed naciśnięciem **F8** (zaznacz wszystko)
+
+### 9.8 Przykładowy plik konfiguracyjny INI
+
+Poniżej znajduje się przykładowy fragment pliku INI z profilem formatowania zgodnym z tym dokumentem. Możesz go zapisać i zaimportować do PL/SQL Developer:
+
+```ini
+[Beautifier Profile: PL/SQL Best Practices v3.0]
+Version=15.0
+
+[General]
+UseOnFileOpen=0
+UseAfterAutoReplace=1
+UseOnSave=0
+BeautifySelectionOnly=1
+
+[Indentation]
+Indent=2
+UseTabs=0
+IndentSelectItems=1
+IndentFromItems=1
+IndentWhereConditions=1
+IndentJoinConditions=1
+IndentWhenConditions=1
+IndentDeclarations=1
+
+[Capitalization]
+SQLKeywords=UPPERCASE
+PLSQLKeywords=UPPERCASE
+DataTypes=UPPERCASE
+Identifiers=lowercase
+Functions=DoNotChange
+
+[LineBreaks]
+SelectList=LineBreakAfterEachItem
+FromClause=LineBreakAfterEachItem
+WhereClause=LineBreakAfterEachCondition
+AndOr=Before
+CommaInLists=After
+MaxLineLength=100
+BeginOnNewLine=1
+EndOnNewLine=1
+ThenOnNewLine=0
+LoopOnNewLine=1
+DeclareOnNewLine=1
+
+[WhiteSpace]
+BeforeOperators=1
+AfterOperators=1
+BeforeComma=0
+AfterComma=1
+AroundParentheses=0
+RemoveTrailingSpaces=1
+RemoveEmptyLines=0
+
+[Comments]
+AlignSingleLineComments=0
+KeepCommentsOnSameLine=1
+IndentMultiLineComments=1
+```
+
+**Jak użyć tego pliku:**
+
+1. Skopiuj powyższą zawartość do pliku tekstowego
+2. Zapisz jako `plsql_beautifier_config.ini`
+3. W PL/SQL Developer: `Preferences → User Interface → Editor → Beautifier`
+4. Kliknij przycisk **Import**
+5. Wybierz zapisany plik `.ini`
+6. Profil "PL/SQL Best Practices v3.0" zostanie dodany do listy
+7. Wybierz go z dropdown i kliknij **Set as default**
+
+### 9.9 Integracja z kontrolą wersji (Git)
+
+Aby zapewnić spójne formatowanie w całym zespole:
+
+**Krok 1: Dodaj plik konfiguracyjny do repozytorium**
+
+```bash
+# Utwórz folder dla konfiguracji
+mkdir -p .plsqldev
+
+# Skopiuj wyeksportowany profil
+cp "C:\Users\Username\AppData\Roaming\Allround Automations\PL SQL Developer 15\Beautifier.ini" .plsqldev/beautifier_config.ini
+
+# Dodaj do Git
+git add .plsqldev/beautifier_config.ini
+git commit -m "Add PL/SQL Developer beautifier configuration"
+git push
+```
+
+**Krok 2: Dodaj instrukcje do README projektu**
+
+```markdown
+## Konfiguracja PL/SQL Developer
+
+1. Pobierz najnowszą wersję z repozytorium
+2. Otwórz PL/SQL Developer
+3. Przejdź do Tools → Preferences → User Interface → Editor → Beautifier
+4. Kliknij Import i wybierz plik `.plsqldev/beautifier_config.ini`
+5. Wybierz profil "PL/SQL Best Practices v3.0" i ustaw jako domyślny
+6. Przed każdym commit'em formatuj kod: F8
+```
+
+**Krok 3: Pre-commit hook (opcjonalnie)**
+
+```bash
+#!/bin/bash
+# .git/hooks/pre-commit
+
+# Sprawdź, czy są pliki SQL do sformatowania
+sql_files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(sql|prc|fnc|pks|pkb)$')
+
+if [ -n "$sql_files" ]; then
+  echo "🔍 Przypomnienie: Upewnij się, że sformatowałeś pliki SQL (F8 w PL/SQL Developer)"
+  echo "Pliki do sprawdzenia:"
+  echo "$sql_files"
+  
+  # Opcjonalnie: można dodać automatyczne sprawdzanie
+  read -p "Czy sformatowałeś wszystkie pliki? (y/n) " -n 1 -r
+  echo
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    echo "❌ Commit anulowany. Sformatuj pliki i spróbuj ponownie."
+    exit 1
+  fi
+fi
+
+echo "✅ Sprawdzenie formatowania OK"
+exit 0
+```
+
+### 9.10 Dodatkowe wskazówki
+
+1. **Testuj na kopii** - przed zastosowaniem nowego profilu na projekcie produkcyjnym, przetestuj go na kopii plików.
+
+2. **Wersjonuj profile** - trzymaj historię profili formatowania w Git, z nazwami typu `beautifier_v1.0.ini`, `beautifier_v2.0.ini`.
+
+3. **Dokumentuj odstępstwa** - jeśli świadomie odstępujesz od standardu (np. dla wygenerowanego kodu), dodaj komentarz:
+   ```sql
+   -- BEAUTIFIER OFF
+   -- Ten kod został wygenerowany automatycznie
+   SELECT a,b,c FROM table;
+   -- BEAUTIFIER ON
+   ```
+
+4. **Code Review** - skonfiguruj narzędzie do code review tak, aby sprawdzało formatowanie (np. GitLab CI/CD).
+
+5. **Backup ustawień** - regularnie eksportuj swoje profile do pliku backup.
+
+6. **Synchronizuj z zespołem** - organizuj warsztaty, gdzie cały zespół razem konfiguruje narzędzie.
+
+7. **Użyj Template** - PL/SQL Developer pozwala na tworzenie szablonów kodu (Templates) już sformatowanych według standardów:
+   ```sql
+   -- Template: proc
+   CREATE OR REPLACE PROCEDURE |name| IS
+   BEGIN
+     |cursor|
+   END |name|;
+   /
+   ```
+
+---
+
 ## Podsumowanie
 
 Przestrzeganie przedstawionych praktyk formatowania kodu PL/SQL przynosi następujące korzyści:
@@ -1252,14 +2400,7 @@ Dla automatyzacji formatowania kodu PL/SQL zaleca się użycie:
 
 ---
 
-**Autor:** GitHub Copilot  
-**Data utworzenia:** 7 listopada 2025  
-**Ostatnia aktualizacja:** 7 listopada 2025  
-**Wersja dokumentu:** 2.3
+**Autor:** Piotr Tomkiewicz  
+**Data utworzenia:** 6 października 2025  
+**Wersja dokumentu:** 4.0
 
-### Historia zmian:
-- **v1.0** (2025-11-07): Wersja początkowa z podstawowymi regułami formatowania
-- **v2.0** (2025-11-07): Dodanie reguł nazewnictwa obiektów bazodanowych, uspójnienie sufiksów
-- **v2.1** (2025-11-07): Zmiana standardu wcięć z 4 na 2 spacje, formatowanie INSERT-ów
-- **v2.2** (2025-11-07): Usunięcie wszystkich sekcji "NIEPOPRAWNIE" - pozostawienie tylko dobrych praktyk
-- **v2.3** (2025-11-07): Implementacja standardowych konwencji nazewniczych PL/SQL
